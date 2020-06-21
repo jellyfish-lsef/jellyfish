@@ -1,0 +1,432 @@
+
+@font-face {
+    font-family: 'GothamSSm-Black'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Black.otf');
+}
+@font-face {
+    font-family: 'GothamSSm-Bold'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Bold.otf');
+}
+@font-face {
+    font-family: 'GothamSSm-Medium'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Medium.otf');
+}
+@font-face {
+    font-family: 'GothamSSm-Book'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Book.otf');
+}
+
+
+*, *::after, *::before {
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
+}
+
+#appContainer {
+    position:fixed;
+    left:0;
+    top:0;
+    width:100vw;
+    height:100vh;
+}
+body {
+    padding:0;
+    margin:0;
+    background: #222;
+    color: #fff;
+    font-family: 'GothamSSm-Medium', sans-serif;
+    user-select: none;
+}
+
+
+#topBar {
+    height: 56px;
+    width:100vw;
+    position:fixed;
+    top:0;
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+}
+
+.topBarBrand {
+    position: fixed;
+    left: 15px;
+    top:10px;
+    font-size: 26px;
+    margin:0;
+}
+.outlinedBtn {
+    border: 2px solid #fff;
+    background: transparent;
+    color: #fff;
+    font-size: 15px;
+    font-family: GothamSSm-Bold, sans-serif;
+    border-radius: 25px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right:20px;
+    transition: 0.2s background, 0.2s color;
+    cursor: pointer;
+}
+
+.outlinedBtn:hover {
+    background: #fff;
+    color: #9C0A0E;
+}
+button:focus,input:focus {
+    outline: none;
+}
+.outlinedBtn[disabled] {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+.outlinedBtn[disabled]:hover {
+    color: #fff;
+    background: transparent;
+}
+#topBarInject {
+    position:fixed;
+    right: 15px;
+    top:12px;
+}
+#topBarNavi {
+    position:fixed;
+    width: 100vw;
+    text-align:center;
+    left:0;
+    font-size: 17px;
+    top: 18px;
+}
+#topBarNavi > * {
+    margin-left: 15px;
+    margin-right: 15px;
+    opacity: 0.75;
+}
+#topBarNavi > .selected {
+    opacity: 1;
+    font-family: GothamSSm-Bold,sans-serif;
+    pointer-events: none;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+.shadow {
+    box-shadow: 0px 0px 20px #9C0A0E;
+}
+#mainContainer {
+    position:fixed;
+    top: 56px;
+    left:0;
+    height: calc(100vh - 56px);
+    width: 100vw;
+    transition: 0.3s left;
+}
+.container {
+    position: absolute;
+    left:0;
+    height: calc(100vh - 56px);
+    width: 100vw;
+    overflow: hidden;
+}
+/* uncomment for brandless */
+/**.topBarBrand {
+    display:none;
+}
+#topBarNavi {
+    text-align: left;
+}**/
+.attribution {
+    text-align: center;
+    width:100vw;
+    font-family: "GothamSSm-Book", sans-serif;
+    font-size: 10px;
+    opacity: 0.5;
+    transition: 0.2s opacity;
+}
+.attribution:hover {
+    opacity: 1;
+}
+.link {
+    text-decoration: underline;
+    font-family: "GothamSSm-Medium",sans-serif;
+}
+
+.fabulous {
+    position: absolute;
+    right: 24px;
+    bottom: 15px;
+    width: 70px;
+    height: 70px;
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+    border-radius: 100%;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    padding:0;
+    background-size: 100% 100%;
+    transition: 1s background-size, 1s box-shadow;
+}
+
+.fabulous:hover {
+    background-size: 1000% 1000%;
+    box-shadow: 0px 0px 20px #E51E10;
+}
+.fabulous:focus {
+    outline: none;
+}
+.fabulous > img {
+    width: 45px;
+}
+@keyframes spin {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+.spin {
+    animation: spin 0.7s;
+}
+.sliderHeader {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 12px;
+    padding-left: 7px;
+}
+.fullwidth {
+    width:100%;
+}
+.simpleButton {
+    background: #555;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #555;
+    -webkit-appearance: none;
+    border: none;
+    padding: 5px;
+    font-family: "GothamSSm-Medium"
+}
+input[type=range] {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: calc(100% - 20px); /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+    margin: 8px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 4px;
+    width: 4px;
+    border-radius: 100%;
+    background: #E51E10;
+    margin-top: 0px;
+    transform: scale(4);
+    box-shadow: 1px 1px 3px #000000 /* Add cool effects to your sliders! */
+}
+input[type=range]::-webkit-slider-runnable-track {
+    background: #e51e10;
+}
+b {
+    font-family: "GothamSSm-Bold"
+}
+
+#scriptsSidebar {
+    position: absolute;
+    left:0;
+    left:0;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    width: 35vw;
+    height: calc(100vh - 56px);
+}
+#searchBox {
+    top:0;
+    left:0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #707070;
+    font-family: "GothamSSm-Bold";
+    width: 100%;
+    height: 45px;
+    font-size: 20px;
+    padding-left: 10px;
+    color: #fff;
+    
+}
+.script {
+    height: 56px;
+    width: 100%;
+    overflow: hidden;
+    padding: 8px;
+    float:right;
+    transition: 0.3s background, 0.3s margin-top, 0.3s margin-bottom, 0.3s box-shadow, 0.3s width;
+}
+.script > h1 {
+    font-size: 20px;
+    margin:0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: "GothamSSm-Black";
+}
+.script > h3 {
+    font-size: 15px;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block; 
+    direction: rtl;
+    opacity: 0.7;
+    
+}
+.scriptSelected {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 5px;
+    width: calc(100% - 10px);
+    border-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+    box-shadow: 0px 0px 50px #9C0A0E;
+    
+}
+
+#scriptsDetails {
+    position: absolute;
+    right:0;
+    overflow:hidden;
+    width: 65vw;
+    height: calc(100vh - 56px);
+    padding: 8px;
+    background: #181818;
+}
+#scriptsDetails > h1 {
+    font-size: 25px;
+    margin:0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: "GothamSSm-Black";
+}
+#scriptsDetails > h3 {
+    font-size: 17px;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block; 
+    direction: rtl;
+    opacity: 0.7;
+    
+}
+
+.highlightedBtn {
+    position: absolute;
+    height: 35px;
+    border-radius:17.5px;
+    width: 60vw;
+    right:18px;
+    color: #fff;
+    font-family: "GothamSSm-Black";
+    font-size: 20px;
+    transition: 0.5s background-size, 0.5s box-shadow;
+}
+
+/** stolen from https://codepen.io/aaroniker/pen/ZEYoxEY a**/
+html {
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: inherit;
+}
+*:before, *:after {
+    box-sizing: inherit;
+}
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    input[type='checkbox'] {
+        --active: #e51e10;
+        --active-inner: #fff;
+        --focus: 2px #e51e1033;
+        --border: #BBC1E1;
+        --border-hover: #e51e10;
+        --background: #fff;
+        --disabled: #F6F8FF;
+        --disabled-inner: #E1E6F9;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        height: 21px;
+        width: 21px;
+        border-radius: 7px;
+        outline: none;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        margin: 0;
+        cursor: pointer;
+        border: 1px solid var(--bc, var(--border));
+        background: var(--b, var(--background));
+        -webkit-transition: background .3s, border-color .3s, box-shadow .2s;
+        transition: background .3s, border-color .3s, box-shadow .2s;
+    }
+    input[type='checkbox']:after{
+        opacity: var(--o, 0);
+        content: '';
+        display: block;
+        position: absolute;
+        -webkit-transition: opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+        transition: opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+        transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+        transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+        width: 5px;
+        height: 9px;
+        border: 2px solid var(--active-inner);
+        border-top: 0;
+        border-left: 0;
+        left: 7px;
+        top: 4px;
+        -webkit-transform: rotate(var(--r, 20deg));
+        transform: rotate(var(--r, 20deg));
+    }
+    input[type='checkbox']:checked {
+        --b: var(--active);
+        --bc: var(--active);
+        --d-o: .3s;
+        --d-t: .6s;
+        --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+    }
+    input[type='checkbox']:disabled {
+        --b: var(--disabled);
+        cursor: not-allowed;
+        opacity: .9;
+    }
+    input[type='checkbox']:disabled:checked {
+        --b: var(--disabled-inner);
+        --bc: var(--border);
+    }
+    input[type='checkbox']:disabled + label {
+        cursor: not-allowed;
+    }
+    input[type='checkbox']:hover:not(:checked):not(:disabled) {
+        --bc: var(--border-hover);
+    }
+    input[type='checkbox']:focus {
+        box-shadow: 0 0 0 var(--focus);
+    }
+    input[type='checkbox']:checked {
+        --o: 1;
+        --r: 43deg;
+    }
+    input[type='checkbox'] + label {
+        font-size: 14px;
+        line-height: 21px;
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+        margin-left: 4px;
+    }
+    
+    
+    
+}

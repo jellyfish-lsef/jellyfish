@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <title>Jellyfish for Calamari-M</title>
+        <link rel="stylesheet" href="index.css">
+        <script>document.addEventListener('dragover', event => event.preventDefault());document.addEventListener('drop', event => event.preventDefault());</script>
+    </head>
+    <body>
+        <div id="appContainer">
+            <div id="topBar" class="shadow">
+                <h1 class="topBarBrand">Jellyfish</h1>
+                <div id="topBarNavi">
+                    <a href="#editor" class="selected">Editor</a>
+                    <a href="#settings">Tools</a>
+                    <a href="#scripts">Scripts</a>
+                    
+                </div>
+                <button id="topBarInject" class="outlinedBtn" onclick="inject()">Inject</button>
+            </div>
+            <div id="mainContainer">
+                <div id="editorContainer" class="container">
+                    <div id="mainMonaco" style="width:100vw;height:calc(100vh - 56px);"></div>
+                    <button id="runFab" class="fabulous shadow"><img src="./assets/play_arrow-black-18dp.svg"/>  </button>
+                </div>
+                <div id="settingsContainer" class="container" style="left:100vw;margin-top: 10px">
+                    <div class="slider" id="speedSlider">
+                        <div class="sliderHeader">
+                            <div class="sliderHeaderText">Walk Speed</div>
+                            <div class="sliderHeaderReset"><button class="simpleButton" onclick="this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).value = 16;this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).onchange()">Reset</button></div>
+                        </div>
+                        <input type="range" class="fullwidth" min="0" onchange="runScript('game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ' + this.value)" max="160" value="16"/>
+                    </div>
+                    <div class="slider" id="jumpSlider">
+                        <div class="sliderHeader">
+                            <div class="sliderHeaderText">Jump Height</div>
+                            <div class="sliderHeaderReset"><button class="simpleButton" onclick="this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).value = 50;this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).onchange()">Reset</button></div>
+                        </div>
+                        <input type="range" class="fullwidth" min="0" onchange="runScript('game.Players.LocalPlayer.Character.Humanoid.JumpPower = ' + this.value)" max="500" value="50"/>
+                    </div>
+                    <div class="slider" id="hipSlider">
+                        <div class="sliderHeader">
+                            <div class="sliderHeaderText">Levitation</div>
+                            <div class="sliderHeaderReset"><button class="simpleButton" onclick="this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).value = 2.362;this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).onchange()">Reset</button></div>
+                        </div>
+                        <input type="range" class="fullwidth" onchange="runScript('game.Players.LocalPlayer.Character.Humanoid.HipHeight = ' + this.value)" max="52.362" value="2.362" min="2.362"/>
+                    </div>
+                    <div class="slider" id="gravitySlider">
+                        <div class="sliderHeader">
+                            <div class="sliderHeaderText">Local Gravity</div>
+                            <div class="sliderHeaderReset"><button class="simpleButton" onclick="this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).value = 196.2;this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).onchange()">Reset</button></div>
+                        </div>
+                        <input type="range" class="fullwidth" onchange="runScript('game.Workspace.Gravity = ' + this.value)" max="500" value="196.2" min="0"/>
+                    </div>
+                    <input id="alwaysOnTop" onchange="ipcRenderer.send('set-topmost',this.checked)" type="checkbox" style="margin-left: 8px;">
+                    <label for="alwaysOnTop">Stay on top?</label>
+                    <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br>check <a target="_blank" class="link" href="https://thelmgn.com/jellyfish">https://thelmgn.com/jellyfish</a> for updates and support<br><br><b>Thanks:</b><br>Inspect - Calamari-M<br>Machport - libCalamari</div>
+                </div>
+                <div id="scriptsContainer" class="container" style="left:200vw;">
+                    <div id="scriptsSidebar">
+                        <div id="searchContainer"><input type="text" id="searchBox" placeholder="Search"></input></div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script scriptSelected">
+                            <h1>rn3.lua</h1>
+                            <h3>Scripts</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+                        <div class="script">
+                            <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                            <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        </div>
+
+                    </div>
+                    <div id="scriptsDetails">
+                        <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
+                        <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
+                        <div id="previwMonaco" style="width:65vw;height:calc(77vh - 56px); background: #f00;margin-left:-8px;margin-top:8px;"></div>
+                        <button id="runScript" class="fabulous shadow highlightedbtn"  onclick='runScript(previewEditor.getValue())''>Run Script</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="client.js"></script>
+    </body>
+</html>
