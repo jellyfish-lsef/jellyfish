@@ -155,7 +155,16 @@ function createWindow () {
         })
     }
     watch()
-    if (!fs.existsSync(JELLYFISH_DATA_DIR))
+    if (!fs.existsSync(JELLYFISH_DATA_DIR)) {
+        fs.mkdirSync(JELLYFISH_DATA_DIR)
+    }
+    if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))) {
+        fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))
+    }
+    if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Config"))) {
+        fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Config"))
+    }
+    
     
     // and load the index.html of the app.
     win.loadFile('www/index.html')
