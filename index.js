@@ -12,7 +12,7 @@ const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
 
 
 function createWindow () {
-
+    
     if (!fs.existsSync(path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool"))) {
         var installCalamari = dialog.showMessageBoxSync({
             type: "error",
@@ -40,15 +40,15 @@ function createWindow () {
         fs.mkdirSync(CALAMARI_API_LOCATION)
     }
     
-
+    
     // Create the browser window.
     const win = new BrowserWindow({
-    width: 768,
-    height: 585,
-    show:false,
-    webPreferences: {
-        nodeIntegration: true
-    }
+        width: 768,
+        height: 585,
+        show:false,
+        webPreferences: {
+            nodeIntegration: true
+        }
     })
     async function needsToLogin() {
         try {
@@ -94,16 +94,16 @@ function createWindow () {
         event.reply("set-inject-btn-text","Injecting")
         fs.writeFileSync(path.join(CALAMARI_API_LOCATION,"input.txt"),`0local function callback(text)
         game:shutdown()
-    end
-    local bindableFunction = Instance.new("BindableFunction")
-    bindableFunction.OnInvoke = callback
-    
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Jellyfish for Calamari-M";
-        Text = "Calamari has been successfully injected"; 
-        Callback = bindableFunction;
-        Button1 = "Exit";
-    })`)
+        end
+        local bindableFunction = Instance.new("BindableFunction")
+        bindableFunction.OnInvoke = callback
+        
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Jellyfish for Calamari-M";
+            Text = "Calamari has been successfully injected"; 
+            Callback = bindableFunction;
+            Button1 = "Exit";
+        })`)
         require("sudo-prompt").exec(path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool"), {name: "Calamari"}, function(e,stdout,stderr) {
             if (e) {
                 dialog.showMessageBoxSync({
@@ -139,7 +139,7 @@ function createWindow () {
                 event.reply("enable-inject-btn")
             },2000)
             return event.reply("set-inject-btn-text","Failed")
-
+            
         })
     })
     var lastUpdate = 0
@@ -156,18 +156,18 @@ function createWindow () {
     }
     watch()
     if (!fs.existsSync(JELLYFISH_DATA_DIR))
-      
+    
     // and load the index.html of the app.
     win.loadFile('www/index.html')
     win.webContents.on('new-window', function(event, url){
         event.preventDefault();
         child_process.spawn("open", [url])
     });
-      
+    
     win.once('ready-to-show', () => {
-    setTimeout(function() {
-        win.show()
-    },300)
+        setTimeout(function() {
+            win.show()
+        },300)
     })
 }
 
