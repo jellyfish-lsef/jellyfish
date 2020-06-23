@@ -142,6 +142,9 @@ function createWindow () {
         })
     })
     var lastUpdate = 0
+    if (!fs.existsSync(path.join(CALAMARI_API_LOCATION,"input.txt"))) {
+        fs.writeFileSync(path.join(CALAMARI_API_LOCATION,"input.txt"),"")
+    }
     function watch() {
         fs.watch(path.join(CALAMARI_API_LOCATION,"input.txt")).on("change",() => {
             console.log(process.uptime() - lastUpdate)
