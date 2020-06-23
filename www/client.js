@@ -143,7 +143,7 @@ ipcRenderer.on('script-found', (event, arg) => {
     if (arg[0] == key)  {
         var r = path.relative(arg[1],arg[2])
         var p = path.parse(r)
-        if (p.ext == ".lua") {
+        if (p.ext == ".lua" || p.ext == ".txt") {
             createScript(p,arg[2])
         }
     }

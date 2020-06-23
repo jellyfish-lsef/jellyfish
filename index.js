@@ -191,10 +191,30 @@ function createWindow () {
     
     win.once('ready-to-show', () => {
 
-        setTimeout(function() {
+        setTimeout(async function() {
             win.show()
             win.webContents.setZoomFactor(1);
             win.webContents.setVisualZoomLevelLimits(1, 1);
+            try {
+                var j = await (await fetch("https://api.github.com/repos/thelmgn/Jellyfish/releases")).json()
+                var cv = require("./package.json").version
+                var nv = j[0].tag_name
+                console.log(j[0].tag_name,cv)
+                if (cv != nv) {
+                    console.log("diff vers")
+                    var update = dialog.showMessageBoxSync({
+                        buttons: ["No","Yes"],
+                        defaultId: 1,
+                        message: "Not latest version",
+                        detail: `The latest version of Jellyfish is ${nv}, you're running ${cv}, would you like to update now?`,
+                    })
+                    if (update) {
+                        child_process.spawn("open", [j[0].assets[0].browser_download_url])
+                    }
+                }
+            } catch(e) {
+                console.error(e)
+            }
             //win.webContents.setLayoutZoomLevelLimits(0, 0);
         },300)
     })
