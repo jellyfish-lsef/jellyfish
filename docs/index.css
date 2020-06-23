@@ -1,0 +1,426 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
+@font-face {
+    font-family: 'GothamSSm-Black'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Black.otf');
+}
+@font-face {
+    font-family: 'GothamSSm-Bold'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Bold.otf');
+}
+@font-face {
+    font-family: 'GothamSSm-Medium'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Medium.otf');
+}
+@font-face {
+    font-family: 'GothamSSm-Book'; 
+    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Book.otf');
+}
+
+
+*, *::after, *::before {
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
+}
+
+#appContainer {
+    position:fixed;
+    left:0;
+    top:0;
+    width:100vw;
+    height:100vh;
+}
+body {
+    padding:0;
+    margin:0;
+    background: #222;
+    color: #fff;
+    font-family: "GothamSSm-Medium", "Montserrat", sans-serif;font-weight:500;
+    user-select: none;
+}
+
+
+#topBar {
+    height: 56px;
+    width:100vw;
+    position:fixed;
+    top:0;
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+}
+
+.topBarBrand {
+    position: fixed;
+    left: 15px;
+    top:10px;
+    font-size: 26px;
+    margin:0;
+}
+.outlinedBtn {
+    border: 2px solid #fff;
+    background: transparent;
+    color: #fff;
+    font-size: 15px;
+    font-family: GothamSSm-Bold, sans-serif;
+    border-radius: 25px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right:20px;
+    transition: 0.2s background, 0.2s color;
+    cursor: pointer;
+}
+
+.outlinedBtn:hover {
+    background: #fff;
+    color: #9C0A0E;
+}
+button:focus,input:focus {
+    outline: none;
+}
+.outlinedBtn[disabled] {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+.outlinedBtn[disabled]:hover {
+    color: #fff;
+    background: transparent;
+}
+#topBarInject {
+    position:fixed;
+    right:15px;
+    top:12px;
+}
+#topBarNavi {
+    position:fixed;
+    width: 100vw;
+    text-align:center;
+    left:0;
+    font-size: 17px;
+    top: 18px;
+}
+#topBarNavi > * {
+    margin-left: 15px;
+    margin-right: 15px;
+    opacity: 0.75;
+}
+#topBarNavi > .selected {
+    opacity: 1;
+    font-family: GothamSSm-Bold,sans-serif;
+    pointer-events: none;
+}
+
+a {
+    color: #fff;
+}
+.shadow {
+    box-shadow: 0px 0px 20px #9C0A0E;
+}
+#mainContainer {
+    position:fixed;
+    top: 56px;
+    left:0;
+    height: calc(100vh - 56px);
+    width: 100vw;
+    transition: 0.3s left;
+}
+.container {
+    position: absolute;
+    left:0;
+    height: calc(100vh - 56px);
+    width: 100vw;
+    overflow: hidden;
+}
+/* uncomment for brandless */
+/**.topBarBrand {
+    display:none;
+}
+#topBarNavi {
+    text-align: left;
+}**/
+.attribution {
+    text-align: center;
+    width:100vw;
+    font-family: "GothamSSm-Book", "Montserrat", sans-serif;font-weight:400;
+    font-size: 10px;
+    opacity: 0.5;
+    transition: 0.2s opacity;
+}
+.attribution:hover {
+    opacity: 1;
+}
+.link {
+    text-decoration: underline;
+    font-family: "GothamSSm-Medium", "Montserrat", sans-serif;font-weight:500;
+}
+
+.fabulous {
+    position: absolute;
+    right: 24px;
+    bottom: 15px;
+    width: 70px;
+    height: 70px;
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+    border-radius: 100%;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    padding:0;
+    background-size: 100% 100%;
+    transition: 1s background-size, 1s box-shadow;
+}
+
+.fabulous:hover {
+    background-size: 1000% 1000%;
+    box-shadow: 0px 0px 20px #E51E10;
+}
+.fabulous:focus {
+    outline: none;
+}
+.fabulous > img {
+    width: 45px;
+}
+@keyframes spin {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+.spin {
+    animation: spin 0.7s;
+}
+.sliderHeader {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 12px;
+    padding-left: 7px;
+}
+.fullwidth {
+    width:100%;
+}
+.simpleButton {
+    background: #555;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #555;
+    -webkit-appearance: none;
+    border: none;
+    padding: 5px;
+    font-family: "GothamSSm-Medium", "Montserrat", sans-serif;font-weight:500;
+}
+input[type=range] {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: calc(100% - 20px); /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+    margin: 8px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 4px;
+    width: 4px;
+    border-radius: 100%;
+    background: #E51E10;
+    margin-top: 0px;
+    transform: scale(4);
+    box-shadow: 1px 1px 3px #000000 /* Add cool effects to your sliders! */
+}
+input[type=range]::-webkit-slider-runnable-track {
+    background: #e51e10;
+}
+b {
+    font-family: "GothamSSm-Bold", "Montserrat", sans-serif;font-weight:700
+}
+
+#scriptsSidebar {
+    position: absolute;
+    left:0;
+    bottom:0;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    width: 35vw;
+    height: calc(100vh - 101px);
+}
+#searchBox {
+    top:0;
+    left:0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #707070;
+    font-family: "GothamSSm-Bold", "Montserrat", sans-serif;font-weight:700;
+    width: 35vw;
+    height: 45px;
+    font-size: 20px;
+    padding-left: 10px;
+    color: #fff;
+    
+}
+.script {
+    width: 100%;
+    overflow: hidden;
+    padding: 8px;
+    float:right;
+    transition: 0.3s background, 0.3s margin-top, 0.3s margin-bottom, 0.3s box-shadow, 0.3s width;
+    cursor: pointer;
+    width: calc(100% - 5px);
+}
+.script > h1 {
+    font-size: 20px;
+    margin:0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: "GothamSSm-Black", "Montserrat", sans-serif;font-weight:900;
+}
+.script > h3 {
+    font-size: 15px;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block; 
+    direction: rtl;
+    opacity: 0.7;
+    
+}
+.scriptSelected {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: calc(100% - 5px);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+    box-shadow: 0px 0px 50px #9C0A0E;
+    cursor: default;
+}
+
+#scriptsDetails {
+    position: absolute;
+    right:0;
+    overflow:hidden;
+    width: 65vw;
+    height: calc(100vh - 56px);
+    padding: 8px;
+    background: #181818;
+    bottom:0;
+}
+#scriptsDetails > h1 {
+    font-size: 25px;
+    margin:0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: "GothamSSm-Black", "Montserrat", sans-serif;font-weight:900;
+}
+#scriptsDetails > h3 {
+    font-size: 17px;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block; 
+    direction: rtl;
+    opacity: 0.7;
+    
+}
+
+.highlightedBtn {
+    position: absolute;
+    height: 35px;
+    border-radius:17.5px;
+    width: 60vw;
+    right:18px;
+    color: #fff;
+    font-family: "GothamSSm-Black", "Montserrat", sans-serif;font-weight:900;
+    font-size: 20px;
+    transition: 0.5s background-size, 0.5s box-shadow;
+}
+
+#loginContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background:#111c;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    z-index: 1000;
+    transform: scale(2);
+    pointer-events: none;
+    transition: 0.5s opacity, 0.5s transform;
+}
+body.loggingIn > #loginContainer {
+    opacity: 1;
+    transform: none;
+    pointer-events: all;
+}
+body.loggingIn > #appContainer {
+    pointer-events: none;
+}
+
+#loginBox {
+    position:fixed;
+    width: 384px;
+    height: 242px;
+    left: calc(50vw - 192px);
+    top: calc(50vh - 121px);
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+    box-shadow: 0px 0px 50px #9C0A0E;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#loginBox > * {
+    display: block;
+}
+#loginBox > .textbox {
+    background: #333333;
+    color: #fff;
+    height: 35px;
+    width: 330px;
+    font-size: 20px;
+    box-shadow: 0px 0px 10px #333;
+    border: none;
+    margin-left: 27px;
+    margin-bottom: 20px;
+    font-family: "GothamSSm-Bold", "Montserrat", sans-serif;font-weight:700;
+    padding-left: 7px;
+}
+#loginBox > button {
+    display: inline-block;
+    margin-right: 16px;
+}
+#loginBox > a {
+    display: inline-block;
+}
+#loginBox > img {
+    position: fixed;
+    left: calc(50vw - 42px);
+    top: calc(50vh - 230px);
+}
+#scriptsComingSoon,#titles {
+    position: absolute;
+    top: calc(50vh - 56px);
+    left: 50vw;
+    transform: translate(-50%,-50%);
+    width: auto;
+    text-align: center;
+    z-index:9999;
+    max-width: 100vw;
+    font-size: 150%;
+}
+#scriptsComingSoon > h2,#titles > h2 {
+    opacity: 0.75;
+}
+#titles {
+    top: 25vh;
+}
+#mainImage {
+    position: absolute;
+    top: 55vh;
+    left: 0;
+    width: 100vw;
+    height: 70vh;
+    background-image: url("assets/Untitled\ 5.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}

@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>Jellyfish for Calamari-M</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="index.css">
+        <script>document.addEventListener('dragover', event => event.preventDefault());document.addEventListener('drop', event => event.preventDefault());</script>
+    </head>
+    <body>
+        <div id="appContainer">
+            <div id="topBar" class="shadow">
+                <h1 class="topBarBrand">Jellyfish</h1>
+                <div id="topBarNavi">
+                    <a href="#editor" class="selected">Home</a>
+                    <a href="#settings">Help + Support</a>
+                    <a href="#scripts">Script Hub</a>
+                    
+                </div>
+                <button id="topBarInject" class="outlinedBtn" onclick="download()">Download</button>
+            </div>
+            <div id="mainContainer">
+                <div id="editorContainer" style="background-image: url('assets/Untitled.jpg');background-position: center;background-repeat: no-repeat;background-size: cover;" class="container">
+                    <div id="titles">
+                        <h1>The most powerful UI for Calamari-M</h1>
+                        <h2>Fully fledged code editor, gorgeous interface and best-in-class script hub.</h2>
+                    </div>
+                    <div id="mainImage"></div>
+                </div>
+                <div id="settingsContainer" class="container" style="left:100vw;margin-top: 10px">
+                    <h1 class="HelpQuestion">Help! I can't open it because you're an unverified publisher!</h1>
+                    You can fix this by pressing Control, and then opening Jellyfish, and then pressing open.
+                    <h1 class="HelpQuestion">Where do I put the scripts?</h1>
+                    In the "Jellyfish" folder in your documents folder. Make sure the file names in ".lua"!
+                    <h1 class="HelpQuestion">I still have questions</h1>
+                    Ping me on <a href="https://discord.com/users/158311402677731328">Discord (theLMGN#4444)</a>, or DM me on <a href="https://twitter.com/thelmgn">Twitter</a>
+                    <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br><br><b>Thanks:</b><br>Inspect - Calamari-M<br>Machport - libCalamari</div>
+                </div>
+                <div id="scriptsContainer" class="container" style="left:200vw;pointer-events: none;">
+                    <div id="scriptsComingSoon">
+                        <h1>Script Hub is coming soon.</h1>
+                        <h3>Watch this space.</h3>
+                    </div>
+                    <div style="filter:blur(5px);opacity:0.5;" id="searchContainer"><input type="text" id="searchBox" placeholder="Search"></input></div>
+                    <div style="filter:blur(5px);opacity:0.5;" id="scriptsSidebar">
+                        <div id="scriptsSidebar"><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/Calamari-RemoteSpy.lua" data-relative="Calamari Default/Calamari-RemoteSpy.lua"><h1>Calamari-RemoteSpy.lua</h1><h3>Calamari Default</h3></div><div class="script scriptSelected" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Jellyfish Extras/rn3_SpectationUI.lua" data-relative="Jellyfish Extras/rn3_SpectationUI.lua"><h1>rn3_SpectationUI.lua</h1><h3>Jellyfish Extras</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/ClickTP.lua" data-relative="Calamari Default/ClickTP.lua"><h1>ClickTP.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/Dex.lua" data-relative="Calamari Default/Dex.lua"><h1>Dex.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/DoubleMusicTails.lua" data-relative="Calamari Default/DoubleMusicTails.lua"><h1>DoubleMusicTails.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/ESP.lua" data-relative="Calamari Default/ESP.lua"><h1>ESP.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/FE Animations.lua" data-relative="Calamari Default/FE Animations.lua"><h1>FE Animations.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/FPS_Unlocker.lua" data-relative="Calamari Default/FPS_Unlocker.lua"><h1>FPS_Unlocker.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/GodClaws.lua" data-relative="Calamari Default/GodClaws.lua"><h1>GodClaws.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/InfiniteYiff.lua" data-relative="Calamari Default/InfiniteYiff.lua"><h1>InfiniteYiff.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/LustrisSword.lua" data-relative="Calamari Default/LustrisSword.lua"><h1>LustrisSword.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/PlaceSaver.lua" data-relative="Calamari Default/PlaceSaver.lua"><h1>PlaceSaver.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/RoXploit_6.lua" data-relative="Calamari Default/RoXploit_6.lua"><h1>RoXploit_6.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/Starglitcher.lua" data-relative="Calamari Default/Starglitcher.lua"><h1>Starglitcher.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/TopK3k.lua" data-relative="Calamari Default/TopK3k.lua"><h1>TopK3k.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/TrueHeroUltima.lua" data-relative="Calamari Default/TrueHeroUltima.lua"><h1>TrueHeroUltima.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/Wings.lua" data-relative="Calamari Default/Wings.lua"><h1>Wings.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/c00lgui.lua" data-relative="Calamari Default/c00lgui.lua"><h1>c00lgui.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/fly.lua" data-relative="Calamari Default/fly.lua"><h1>fly.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/headspin.lua" data-relative="Calamari Default/headspin.lua"><h1>headspin.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Calamari Default/noclip.lua" data-relative="Calamari Default/noclip.lua"><h1>noclip.lua</h1><h3>Calamari Default</h3></div><div class="script" data-filename="/Users/thelmgn/Documents/Jellyfish/Scripts/Jellyfish Extras/README.lua" data-relative="Jellyfish Extras/README.lua"><h1>README.lua</h1><h3>Jellyfish Extras</h3></div></div>
+                    </div>
+                    <div style="filter:blur(5px);opacity:0.5;" id="scriptsDetails">
+                        <h1>rn3_SpectationUI.lua</h1>
+                        <h3>Jellyfish Extras</h3>
+                        <div id="previwMonaco" style="width:65vw;height:calc(100vh - 122px); background-image: url('assets/codeEditor.png');background-size:cover;background-position:top left;margin-left:-8px;margin-top:8px;"></div>
+                        <button id="runScript" class="fabulous shadow highlightedbtn"  onclick='runScript(previewEditor.getValue())''>Run Script</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="loginContainer">
+            <div id="loginBox">
+                <img width="85" height="85" src="assets/calamari.png"/>
+                <h1>Login with Calamari</h1>
+                <input type="text" class="textbox" placeholder="Username"  id="loginUsername"></input>
+                <input type="password" class="textbox" placeholder="Password" id="loginPassword"></input>
+                <button id="loginBtn" class="outlinedBtn" onclick="login()">Login</button><a id="buyBtn" target="_blank" class="outlinedBtn" href="https://calamari.cc/purchase/m/">Register</a>
+            </div>
+        </div>
+        <script src="client.js"></script>
+    </body>
+</html>
