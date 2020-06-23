@@ -20,7 +20,7 @@
     "electron": "^9.0.4",
     "monaco-editor": "^0.20.0",
     "node-fetch": "^2.6.0",
-    "node-walker": "^0.1.0",
-    "sudo-prompt": "^9.2.1"
+    "sudo-prompt": "^9.2.1",
+    "walker": "^1.0.7"
   }
 }

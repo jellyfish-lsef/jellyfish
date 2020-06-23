@@ -1,6 +1,7 @@
 /* monaco loading */
 
 const path = require('path');
+const fs = require("fs")
 const { ipcRenderer } = require('electron')
 const amdLoader = require('../node_modules/monaco-editor/min/vs/loader.js');
 const amdRequire = amdLoader.require;
@@ -25,12 +26,13 @@ self.module = undefined;
 const mainContainer = document.querySelector("#mainContainer")
 const injectBtn = document.querySelector("#topBarInject")
 const runFab = document.querySelector("#runFab")
+const scriptsContainer = document.querySelector("#scriptsSidebar")
 
 window.onhashchange = function(h) {
     var hash = location.hash
     if (hash == "#editor") { mainContainer.style.left = "0px" }
-    if (hash == "#scripts") { mainContainer.style.left = "-200vw" }
     if (hash == "#settings") { mainContainer.style.left = "-100vw" }
+    if (hash == "#scripts") { mainContainer.style.left = "-200vw"; startCrawl() }
     document.querySelector("a.selected").classList.remove("selected")
     document.querySelector(`a[href="${hash}"]`).classList.add("selected")
 }
@@ -81,3 +83,73 @@ function runScript(a) {
     console.log(a)
     ipcRenderer.send("run-script",a)
 }
+var isLoading = true
+
+function selectScript(filename,strings) {
+    return function() {
+        var detailsHeader = document.querySelector("#scriptsDetails > h1")
+        var detailsSubheader = document.querySelector("#scriptsDetails > h3")
+        detailsHeader.innerText = ""
+        detailsSubheader.innerText = ""
+        previewEditor.setValue("")
+        try {
+            if (isLoading) return;
+            isLoading = true
+            fs.readFile(filename,(err,data) => {
+                if (err) return console.error(err);
+                while (document.querySelector(".script.scriptSelected")) {document.querySelector(".script.scriptSelected").classList.remove("scriptSelected")}
+                this.classList.add("scriptSelected")
+                previewEditor.setValue(data.toString())
+                detailsHeader.innerText = strings[0]
+                detailsSubheader.innerText = strings[1]
+                isLoading = false
+            })
+            
+            
+        } catch(e) {
+            isLoading = false
+            console.error(e)
+            this.remove()
+            if (document.querySelector(".script")) {
+                document.querySelector(".script").click()
+            }
+        }
+    }
+}
+
+function createScript(p,filename) {
+    var div = document.createElement("div")
+    div.classList = "script"
+    div.dataset.filename = filename
+    div.dataset.relative = path.join(p.dir,p.base)
+    div.onclick = selectScript(filename,[p.base,p.dir])
+    var title = document.createElement("h1")
+    title.innerText = p.base
+    div.appendChild(title)
+    var subtitle = document.createElement("h3")
+    subtitle.innerText = p.dir
+    div.appendChild(subtitle)
+    scriptsContainer.appendChild(div)
+}
+
+var key = ""
+
+ipcRenderer.on('script-found', (event, arg) => {
+    if (arg[0] == key)  {
+        var r = path.relative(arg[1],arg[2])
+        var p = path.parse(r)
+        if (p.ext == ".lua") {
+            createScript(p,arg[2])
+        }
+    }
+})
+
+function startCrawl() {
+    isLoading = false
+    key = Math.random().toString()
+    scriptsContainer.innerHTML = ""
+    ipcRenderer.send("startCrawl",key)
+}
+ipcRenderer.on('enable-inject-btn', (event, arg) => {
+    if (arg.key != key) return; // prevent multiple running scan operations
+})

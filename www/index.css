@@ -233,11 +233,11 @@ b {
 #scriptsSidebar {
     position: absolute;
     left:0;
-    left:0;
+    bottom:0;
     overflow-x:hidden;
     overflow-y:scroll;
     width: 35vw;
-    height: calc(100vh - 56px);
+    height: calc(100vh - 101px);
 }
 #searchBox {
     top:0;
@@ -246,7 +246,7 @@ b {
     border: none;
     border-bottom: 2px solid #707070;
     font-family: "GothamSSm-Bold";
-    width: 100%;
+    width: 35vw;
     height: 45px;
     font-size: 20px;
     padding-left: 10px;
@@ -254,12 +254,13 @@ b {
     
 }
 .script {
-    height: 56px;
     width: 100%;
     overflow: hidden;
     padding: 8px;
     float:right;
     transition: 0.3s background, 0.3s margin-top, 0.3s margin-bottom, 0.3s box-shadow, 0.3s width;
+    cursor: pointer;
+    width: calc(100% - 5px);
 }
 .script > h1 {
     font-size: 20px;
@@ -283,13 +284,12 @@ b {
 .scriptSelected {
     margin-top: 8px;
     margin-bottom: 8px;
-    margin-right: 5px;
-    width: calc(100% - 10px);
-    border-radius: 5px;
+    width: calc(100% - 5px);
+    border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     background-image: linear-gradient(to right, #E51E10,#A20F05);
     box-shadow: 0px 0px 50px #9C0A0E;
-    
+    cursor: default;
 }
 
 #scriptsDetails {
@@ -300,6 +300,7 @@ b {
     height: calc(100vh - 56px);
     padding: 8px;
     background: #181818;
+    bottom:0;
 }
 #scriptsDetails > h1 {
     font-size: 25px;

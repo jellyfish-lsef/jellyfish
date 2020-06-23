@@ -9,8 +9,6 @@ const CALAMARI_API_LOCATION = "/Users/Shared/Calamari"
 const DEFAULT_CAPPS_LOCATION = path.join(homedir,"Documents","CalamariApps")
 const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
 
-
-
 function createWindow () {
     
     if (!fs.existsSync(path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool"))) {
@@ -160,11 +158,26 @@ function createWindow () {
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))) {
         fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))
+        console.log(child_process.execSync(`cd ${path.join(JELLYFISH_DATA_DIR,"Scripts")};curl http://thelmgn.com/jellyfish/Jellyfish_Default_Scripts.zip > default.zip;unzip default.zip; rm default.zip`).toString())
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Config"))) {
         fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Config"))
     }
+    var key = ""
     
+    function traverse(ckey,evt) {
+        var scriptsDir = path.join(JELLYFISH_DATA_DIR,"Scripts")
+        var walker = require("walker")(scriptsDir)
+        console.log(walker)
+        walker.filterDir(() => {return key == ckey})
+        walker.on("file", function(file,stat) {
+            evt.reply('script-found',[key,scriptsDir,file])
+        })
+    }
+    ipcMain.on("startCrawl",(evt,ckey) => {
+        key = ckey
+        traverse(key,evt)
+    })
     
     // and load the index.html of the app.
     win.loadFile('www/index.html')
@@ -174,6 +187,7 @@ function createWindow () {
     });
     
     win.once('ready-to-show', () => {
+
         setTimeout(function() {
             win.show()
         },300)
