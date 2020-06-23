@@ -334,6 +334,70 @@ b {
     transition: 0.5s background-size, 0.5s box-shadow;
 }
 
+#loginContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background:#111c;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    z-index: 1000;
+    transform: scale(2);
+    pointer-events: none;
+    transition: 0.5s opacity, 0.5s transform;
+}
+body.loggingIn > #loginContainer {
+    opacity: 1;
+    transform: none;
+    pointer-events: all;
+}
+body.loggingIn > #appContainer {
+    pointer-events: none;
+}
+
+#loginBox {
+    position:fixed;
+    width: 384px;
+    height: 242px;
+    left: calc(50vw - 192px);
+    top: calc(50vh - 121px);
+    background-image: linear-gradient(to right, #E51E10,#A20F05);
+    box-shadow: 0px 0px 50px #9C0A0E;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#loginBox > * {
+    display: block;
+}
+#loginBox > .textbox {
+    background: #333333;
+    color: #fff;
+    height: 35px;
+    width: 330px;
+    font-size: 20px;
+    box-shadow: 0px 0px 10px #333;
+    border: none;
+    margin-left: 27px;
+    margin-bottom: 20px;
+    font-family: "GothamSSm-Bold";
+    padding-left: 7px;
+}
+#loginBox > button {
+    display: inline-block;
+    margin-right: 16px;
+}
+#loginBox > a {
+    display: inline-block;
+}
+#loginBox > img {
+    position: fixed;
+    left: calc(50vw - 42px);
+    top: calc(50vh - 230px);
+}
+
 /** stolen from https://codepen.io/aaroniker/pen/ZEYoxEY a**/
 html {
     box-sizing: border-box;

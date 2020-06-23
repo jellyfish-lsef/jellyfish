@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Jellyfish for Calamari-M</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="index.css">
         <script>document.addEventListener('dragover', event => event.preventDefault());document.addEventListener('drop', event => event.preventDefault());</script>
     </head>
@@ -60,12 +61,21 @@
                         
                     </div>
                     <div id="scriptsDetails">
-                        <h1>rn3_SpeeeeeeeeeeeeeeeeectationUI.lua</h1>
-                        <h3>Scripts/Jellyfish Included/Utilities/theLMGN/Really/Long/Folder/Name</h3>
-                        <div id="previwMonaco" style="width:65vw;height:calc(77vh - 56px); background: #f00;margin-left:-8px;margin-top:8px;"></div>
+                        <h1>Select a script on the left.</h1>
+                        <h3>.You'll be able to edit the script before running it</h3>
+                        <div id="previwMonaco" style="width:65vw;height:calc(100vh - 122px); background: #f00;margin-left:-8px;margin-top:8px;"></div>
                         <button id="runScript" class="fabulous shadow highlightedbtn"  onclick='runScript(previewEditor.getValue())''>Run Script</button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="loginContainer">
+            <div id="loginBox">
+                <img width="85" height="85" src="assets/calamari.png"/>
+                <h1>Login with Calamari</h1>
+                <input type="text" class="textbox" placeholder="Username"  id="loginUsername"></input>
+                <input type="password" class="textbox" placeholder="Password" id="loginPassword"></input>
+                <button id="loginBtn" class="outlinedBtn" onclick="login()">Login</button><a id="buyBtn" target="_blank" class="outlinedBtn" href="https://calamari.cc/purchase/m/">Register</a>
             </div>
         </div>
         <script src="client.js"></script>

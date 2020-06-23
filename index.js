@@ -78,8 +78,9 @@ function createWindow () {
             event.reply("set-inject-btn-text",n2l == true ? "Not logged in" : n2l)
             dialog.showMessageBoxSync({
                 message: n2l == true ? "Not logged in" : n2l,
-                detail: "Calamari credentials are either not present or invalid.\n\nTODO: Create a login screen for Jellyfish, in the mean time, login with the official Calamari-M UI.",
+                detail: "Calamari credentials are either not present or invalid.",
             })
+            event.reply("request-login")
             setTimeout(function() {
                 event.reply("enable-inject-btn")
             },2000)
@@ -168,7 +169,6 @@ function createWindow () {
     function traverse(ckey,evt) {
         var scriptsDir = path.join(JELLYFISH_DATA_DIR,"Scripts")
         var walker = require("walker")(scriptsDir)
-        console.log(walker)
         walker.filterDir(() => {return key == ckey})
         walker.on("file", function(file,stat) {
             evt.reply('script-found',[key,scriptsDir,file])
@@ -190,6 +190,9 @@ function createWindow () {
 
         setTimeout(function() {
             win.show()
+            win.webContents.setZoomFactor(1);
+            win.webContents.setVisualZoomLevelLimits(1, 1);
+            //win.webContents.setLayoutZoomLevelLimits(0, 0);
         },300)
     })
 }
