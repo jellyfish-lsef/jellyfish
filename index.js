@@ -103,7 +103,27 @@ function createWindow () {
             Callback = bindableFunction;
             Button1 = "Exit";
         })`)
-        require("sudo-prompt").exec(path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool"), {name: "Calamari"}, function(e,stdout,stderr) {
+        ;(function(cb) {
+            if (arg) {
+                try {
+                    var t = require("child_process").spawnSync("sudo",["-n","pwd"])
+                    if (t.stderr.toString().includes("a password is required")) {
+                        require("native-prompt").prompt("Please enter your macOS password.", "Jellyfish needs super user access to inject Calamari.", "").then(text => {
+                            if (text) {
+                                child_process.exec(`echo "${text.replace(/"/g,"\"")}" | sudo -S "${path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool")}"`,{encoding: "utf-8"},cb)
+                            } else {
+                                cb("You denied access.","","")
+                            }
+                        })
+                    } else {
+                        child_process.exec(`sudo -n "${path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool")}"`,{encoding: "utf-8"},cb)
+                    }
+                } catch(e) { cb(e,"","") }
+            } else {
+                require("sudo-prompt").exec(path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool"), {name: "Jellyfish"},cb)
+            }
+        })(function(e,stdout,stderr) {
+            console.log(e,stdout ? stdout.toString() : "(no stdout)",stderr ? stderr.toString() : "(no stderr)")
             if (e) {
                 dialog.showMessageBoxSync({
                     message: "Error while requesting super-user permissions",
@@ -130,6 +150,17 @@ function createWindow () {
                 },2000)
                 return event.reply("set-inject-btn-text","Injected")
             }
+            if (stdout.includes("could not fetch library")) {
+                setTimeout(function() {
+                    event.reply("enable-inject-btn")
+                },2000)
+                dialog.showMessageBoxSync({
+                    message: "Error occured while injecting",
+                    detail: "Please go to 'Tools' and toggle 'Alternative elevation method'.",
+                })
+                return event.reply("set-inject-btn-text","Failed")
+            }
+            
             dialog.showMessageBoxSync({
                 message: "Error occured while injecting",
                 detail: stdout,
@@ -206,7 +237,7 @@ function createWindow () {
                         buttons: ["No","Yes"],
                         defaultId: 1,
                         message: "Not latest version",
-                        detail: `The latest version of Jellyfish is ${nv}, you're running ${cv}, would you like to update now?`,
+                        detail: `The latest version of Jellyfish is ${nv}, you're running ${cv}, would you like to update now?\n\nChangelog:\n${j[0].body}`,
                     })
                     if (update) {
                         child_process.spawn("open", [j[0].assets[0].browser_download_url])
