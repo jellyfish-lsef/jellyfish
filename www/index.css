@@ -264,7 +264,7 @@ b {
     overflow: hidden;
     padding: 8px;
     float:right;
-    transition: 0.3s background, 0.3s margin-top, 0.3s margin-bottom, 0.3s box-shadow, 0.3s width;
+    transition: 0.3s background, 0.3s margin-top, 0.3s margin-bottom, 0.3s box-shadow, 0.3s width, 0.3s color;
     cursor: pointer;
     width: calc(100% - 5px);
 }
@@ -294,6 +294,7 @@ b {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     background-image: linear-gradient(to right, var(--accent-bright),var(--accent-dark));
+    color: #fff;
     box-shadow: 0px 0px 50px var(--accent-verydark);
     cursor: default;
 }
