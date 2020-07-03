@@ -45,7 +45,8 @@ function createWindow () {
         height: 585,
         show:false,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: true
         }
     })
     async function needsToLogin() {
@@ -76,7 +77,7 @@ function createWindow () {
         var n2l = await needsToLogin()
         if (n2l) {
             event.reply("set-inject-btn-text",n2l == true ? "Not logged in" : n2l)
-            dialog.showMessageBoxSync({
+            dialog.showMessageBoxSync(win,{
                 message: n2l == true ? "Not logged in" : n2l,
                 detail: "Calamari credentials are either not present or invalid.",
             })
@@ -106,17 +107,11 @@ function createWindow () {
         ;(function(cb) {
             if (arg) {
                 try {
-                    var t = require("child_process").spawnSync("sudo",["-n","pwd"])
-                    if (t.stderr.toString().includes("a password is required")) {
-                        require("native-prompt").prompt("Please enter your macOS password.", "Jellyfish needs super user access to inject Calamari.", "").then(text => {
-                            if (text) {
-                                child_process.exec(`echo "${text.replace(/"/g,"\"")}" | sudo -S "${path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool")}"`,{encoding: "utf-8"},cb)
-                            } else {
-                                cb("You denied access.","","")
-                            }
-                        })
+                    var r = child_process.spawnSync(`/bin/bash`,[ `-c`, `killall Terminal;osascript -e \"tell application \\\"Terminal\\\"\" -e \"do script \\\"clear;sudo ~/Documents/CalamariApps/CalamariHookHelperTool;sleep 2;killall Terminal\\\"\" -e \"activate\" -e \"end tell\" & osascript -e \"tell application \\\"Terminal\\\"\" -e \"activate\" -e \"end tell\"`])
+                    if (r.stderr.length > 1) {
+                        cb(undefined,r.stdout.toString(),r.stderr.toString())
                     } else {
-                        child_process.exec(`sudo -n "${path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool")}"`,{encoding: "utf-8"},cb)
+                        cb(undefined,"status: success",r.stderr.toString())
                     }
                 } catch(e) { cb(e,"","") }
             } else {
@@ -125,7 +120,7 @@ function createWindow () {
         })(function(e,stdout,stderr) {
             console.log(e,stdout ? stdout.toString() : "(no stdout)",stderr ? stderr.toString() : "(no stderr)")
             if (e) {
-                dialog.showMessageBoxSync({
+                dialog.showMessageBoxSync(win,{
                     message: "Error while requesting super-user permissions",
                     detail: e.toString(),
                 })
@@ -135,7 +130,7 @@ function createWindow () {
                 return event.reply("set-inject-btn-text","Failed")
             }
             if (stdout.includes("invalid pid")) { 
-                dialog.showMessageBoxSync({
+                dialog.showMessageBoxSync(win,{
                     message: "Roblox isn't running",
                     detail: "We couldn't inject into Roblox, well, because there's no Roblox to inject into!",
                 })
@@ -154,14 +149,14 @@ function createWindow () {
                 setTimeout(function() {
                     event.reply("enable-inject-btn")
                 },2000)
-                dialog.showMessageBoxSync({
+                dialog.showMessageBoxSync(win,{
                     message: "Error occured while injecting",
                     detail: "Please go to 'Tools' and toggle 'Alternative elevation method'.",
                 })
                 return event.reply("set-inject-btn-text","Failed")
             }
             
-            dialog.showMessageBoxSync({
+            dialog.showMessageBoxSync(win,{
                 message: "Error occured while injecting",
                 detail: stdout,
             })
@@ -233,7 +228,7 @@ function createWindow () {
                 console.log(j[0].tag_name,cv)
                 if (cv != nv) {
                     console.log("diff vers")
-                    var update = dialog.showMessageBoxSync({
+                    var update = dialog.showMessageBoxSync(win,{
                         buttons: ["No","Yes"],
                         defaultId: 1,
                         message: "Not latest version",
