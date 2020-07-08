@@ -1,9 +1,11 @@
-if (location.hash != "#im_not_a_skid_i_swear" && localStorage.getItem("user_is_skid")) {
-    location.replace("https://www.urbandictionary.com/define.php?term=skiddie")
-} else {
-    localStorage.removeItem("user_is_skid")
-    //alert("ok")
-    location.hash = "editor"
+if (localStorage.getItem("user_is_skid")) {
+    if (location.hash == "#im_not_a_skid_i_swear") {
+        localStorage.removeItem("user_is_skid")
+        alert("ok")
+        location.hash = "editor"
+    } else {
+        location.replace("https://www.urbandictionary.com/define.php?term=skiddie")
+    }
 }
 
 
@@ -16,9 +18,9 @@ const searchBox = document.querySelector("#searchBox")
 window.onhashchange = function(h) {
     var hash = location.hash
     if (hash == "#editor") { mainContainer.style.left = "0px" }
-    if (hash == "#settings") { mainContainer.style.left = "-100vw" }
+    if (hash == "#faq") { mainContainer.style.left = "-100vw" }
     if (hash == "#scripts") { mainContainer.style.left = "-200vw"; }
-    document.querySelector("a.selected").classList.remove("selected")
+    while (document.querySelector("a.selected")) {document.querySelector("a.selected").classList.remove("selected")}
     document.querySelector(`a[href="${hash}"]`).classList.add("selected")
 }
 

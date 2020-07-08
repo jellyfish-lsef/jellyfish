@@ -139,7 +139,7 @@ amdRequire(['vs/editor/editor.main'], function() {
 function inject() {
     injectBtn.disabled = true
     injectBtn.innerText = "Loading"
-    ipcRenderer.send("inject-button-click",localStorage.getItem("usesAlternativeElevation"))
+    ipcRenderer.send("inject-button-click",localStorage.getItem("usesAlternativeElevation") == "true")
 }
 ipcRenderer.on('set-inject-btn-text', (event, arg) => {
     injectBtn.innerText = arg
@@ -254,18 +254,21 @@ function showLogin() {
     } catch(e) {
         console.error(e)
     }
+    document.querySelector("#loginBtn").disabled = undefined
     document.body.classList.add("loggingIn")
 }
 function login() {
+    document.querySelector("#loginBtn").disabled = true
     if (document.querySelector("#loginUsername").value == "trial") {
         return alert("Trial login is no longer available.")
     }
     fs.writeFileSync("/Users/Shared/Calamari/GY",btoa(document.querySelector("#loginUsername").value))
     fs.writeFileSync("/Users/Shared/Calamari/NGV",btoa(document.querySelector("#loginPassword").value))
-    document.body.classList.remove("loggingIn")
+    ipcRenderer.send("check-creds")
 }
 
 ipcRenderer.on('request-login', showLogin)
+ipcRenderer.on('login-success',() => {document.body.classList.remove("loggingIn")})
 window.onkeydown = function(evt) {
     // disable zooming
     if ((evt.code == "Minus" || evt.code == "Equal") && (evt.ctrlKey || evt.metaKey)) {evt.preventDefault()}

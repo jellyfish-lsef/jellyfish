@@ -11,7 +11,7 @@
                 <h1 class="topBarBrand">Jellyfish</h1>
                 <div id="topBarNavi">
                     <a href="#editor" class="selected">Home</a>
-                    <a href="#settings">Help + Support</a>
+                    <a href="#faq">Help + Support</a>
                     <a href="#scripts">Script Hub</a>
                     
                 </div>
@@ -25,11 +25,21 @@
                     </div>
                     <div id="mainImage"></div>
                 </div>
-                <div id="settingsContainer" class="container" style="left:100vw;margin-top: 10px">
+                <div id="faqContainer" class="container" style="left:100vw;margin-top: 10px">
                     <h1 class="HelpQuestion">Help! I can't open it because you're an unverified publisher!</h1>
                     You can fix this by pressing Control, and then opening Jellyfish, and then pressing open.
                     <h1 class="HelpQuestion">Where do I put the scripts?</h1>
                     In the "Jellyfish" folder in your documents folder. Make sure the file names in ".lua"!
+                    <h1 class="HelpQuestion">Will Jellyfish come to Windows?</h1>
+                    I'd love to bring Jellyfish to more users, however due to Calamari for Windows not having a public API, this isn't possible right now. <strike>go bug marie</strike> <sup>(don't actually, she's probably busy)</sup>
+                    <h1 class="HelpQuestion">It's not injecting!</h1>
+                    Try going to the Tools tab and then toggling Alternative Injection. (if you have Alternative Injection enabled, and don't see a popup window, look in your Dock for a black box with a >_ on it)
+                    <h1 class="HelpQuestion">It's crashing my game!</h1>
+                    Check if Calamari-M is fully updated, and then try using the regular Calamari-M UI to inject once. Sometimes Jellyfish can't update properly.
+                    <h1 class="HelpQuestion">Can I theme Jellyfish?</h1>
+                    <strong>Short answer:</strong> Yes. Change your system color settings in System Preferences > General<br>
+                    <strong>Long answer:</strong> Yes, if you know CSS and JS. Jellyfish has a theming engine that will load CSS a file at <code>~/Documents/Jellyfish/Config/theme.css</code>, you can see the default stylesheet <a href="https://raw.githubusercontent.com/theLMGN/jellyfish/master/www/index.css">here</a>. If you want to theme the text editor (Monaco), edit the file <code>~/Documents/Jellyfish/Config/monaco_theme.json</code>, you can see the default theme <a href="https://gist.github.com/theLMGN/807494b936f815ca4cfd839b7e9a369a">here</a>.
+                                        
                     <h1 class="HelpQuestion">I still have questions</h1>
                     Ping me on <a href="https://discord.com/users/158311402677731328">Discord (theLMGN#4444)</a>, or DM me on <a href="https://twitter.com/thelmgn">Twitter</a>
                     <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br><br><b>Thanks:</b><br>Inspect - Calamari-M<br>Machport - libCalamari</div>
