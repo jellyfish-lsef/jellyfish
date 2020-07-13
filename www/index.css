@@ -103,6 +103,7 @@ button:focus,input:focus {
     margin-left: 15px;
     margin-right: 15px;
     opacity: 0.75;
+    transform: 0.3s opacity;
 }
 #topBarNavi > .selected {
     opacity: 1;
