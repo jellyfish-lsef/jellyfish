@@ -33,10 +33,10 @@ window.onkeydown = function(evt) {
 
 
 async function download() {
-    if (confirm("IMPORTANT: READ CAREFULLY\n\nJellyfish is only to be used on games that you have explicit permission to run a LSI on, such as for example, developing anti-cheat software.\n\nAre you intending to use Jellyfish to attack into games you are not the owner of, and do not have permission from the owner to run a LSI on?\n\nCancel = No\nOK = Yes")) {
+    /**if (confirm("IMPORTANT: READ CAREFULLY\n\nJellyfish is only to be used on games that you have explicit permission to run a LSI on, such as for example, developing anti-cheat software.\n\nAre you intending to use Jellyfish to attack into games you are not the owner of, and do not have permission from the owner to run a LSI on?\n\nCancel = No\nOK = Yes")) {
         localStorage.setItem("user_is_skid",true)
         location.reload()
-    }
+    }**/
     injectBtn.innerText = "Fetching download URL"
     injectBtn.disabled = true
     var ftch = await fetch("https://api.github.com/repos/thelmgn/Jellyfish/releases")

@@ -1,5 +1,6 @@
 const webFrame =  require('electron').webFrame
-
+const dialog =  require('electron').remote.dialog
+/**
 function changeAccent() {
     try {
         function hexToRgb(hex) {
@@ -60,7 +61,7 @@ changeAccent()
 require("electron").remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', changeAccent);
 require("electron").remote.systemPreferences.subscribeNotification('AppleAquaColorVariantChanged', changeAccent);
 require("electron").remote.systemPreferences.subscribeNotification('AppleColorPreferencesChangedNotification', changeAccent);
-
+**/
 /* monaco loading */
 
 const path = require('path');
@@ -274,5 +275,92 @@ window.onkeydown = function(evt) {
     if ((evt.code == "Minus" || evt.code == "Equal") && (evt.ctrlKey || evt.metaKey)) {evt.preventDefault()}
     webFrame.setZoomFactor(1)
 }
+
+function reinstallCalamari() {
+    if (location.toString().includes("CalamariApps")) {
+        return dialog.showMessageBoxSync({
+            type: "error",
+            buttons: ["Ok"],
+            defaultId: 0,
+            message: "Jellyfish is inside the CalamariApps folder.",
+            detail: "You are running Jellyfish from within the CalamariApps folder. Please quit Jellyfish, then move it somewhere else (such as your actual Applications folder), then try again.",
+        })
+    }
+    var reinstallOption = dialog.showMessageBoxSync({
+        type: "question",
+        buttons: ["Full Reinstall","App Reinstall","Cancel"],
+        defaultId: 2,
+        message: "Reinstall Calamari?",
+        detail: "Reinstalling will delete everything in the CalamariApps folder, and completing a full reinstall will also log you out of Calamari.",
+    })
+    if (reinstallOption == 2) return;
+    document.body.style.pointerEvents = "none"
+    document.body.style.opacity = "0.5"
+    try {
+        fs.rmdirSync(path.join(homedir,"Documents","CalamariApps"),{ recursive: true })
+        if (reinstallOption == 0) {
+            fs.rmdirSync("/Users/Shared/Calamari",{ recursive: true })
+        }
+        var reinstallOption = dialog.showMessageBoxSync({
+            buttons: ["Quit"],
+            defaultId: 0,
+            message: "Uninstall complete",
+            detail: "Please restart Jellyfish to complete the reinstall.",
+        })
+        window.close()
+    } catch(e) {
+        var reinstallOption = dialog.showMessageBoxSync({
+            type: "error",
+            buttons: ["Ok"],
+            defaultId: 0,
+            message: "Reinstall failed",
+            detail: e.toString(),
+        })
+    }
+}
+
+var chcolor = 0
+function changeColor(hue) {
+    var s = `body, body *, body > * {
+        --accent-bright: hsl(${hue},87%,48%);
+        --accent-dark: hsl(${hue},94%,33%);
+        --accent-verydark: hsl(${hue},88%,33%);
+        --background-main: #222;
+        --text-main: #fff;
+    }`
+    while (document.querySelector("#accentColorChange")) {document.querySelector("#accentColorChange").remove()}
+    var style = document.createElement("style")
+    style.innerHTML = s
+    style.id = "accentColorChange"
+    document.head.appendChild(style)
+    localStorage.setItem("hue", hue)
+    document.querySelector("#hueSlider").value = hue
+}
+
+function startChangingColor(t) {
+    clearInterval(chcolor)
+    setInterval(function() {
+        changeColor(t.value)
+    },30)
+}
+function stopChangingColor(t) {
+    clearInterval(t)
+}
+
+changeColor(localStorage.getItem("hue") || 356)
+var lastPingInterval = 0
+ipcRenderer.on('http-request',(e,data) => {
+    if (data.messageType == "ping") {
+        clearTimeout(lastPingInterval)
+        if (data.gameName) {
+            document.title = "Jellyfish for Calamari-M | Injected into " + data.gameName
+        } else {
+            document.title = "Jellyfish for Calamari-M | Injected"
+        }
+        lastPingInterval = setTimeout(function() {
+            document.title = "Jellyfish for Calamari-M"
+        },2000)
+    }
+})
 
 document.querySelector("#alternativeElevation").checked = localStorage.getItem("usesAlternativeElevation") == "true"

@@ -5,6 +5,8 @@ const path = require("path")
 const fetch = require("node-fetch")
 const { errorMonitor } = require('stream')
 
+
+
 CALAMARI_API_LOCATION = global.CALAMARI_API_LOCATION
 DEFAULT_CAPPS_LOCATION = global.DEFAULT_CAPPS_LOCATION
 JELLYFISH_DATA_DIR = global.JELLYFISH_DATA_DIR
@@ -24,6 +26,7 @@ async function needsToLogin() {
     try {
         var username = fs.readFileSync(path.join(CALAMARI_API_LOCATION,"GY"))
         var password = fs.readFileSync(path.join(CALAMARI_API_LOCATION,"NGV"))
+        console.log("Checking credentials")
         var ftch = await fetch("https://auth.calamari.cc/Login/?type=macosSecure&username=" + username + "&password=" + password, {headers: {"User-Agent":"Jellyfish/" + require("./package.json").version + "(contact: theLMGN#4444)"}})
         var t = await ftch.text()
         if (!t.startsWith("AUTH-")) {
@@ -105,7 +108,13 @@ module.exports = async (event, arg) => {
         Text = "Calamari has been successfully injected"; 
         Callback = bindableFunction;
         Button1 = "Exit";
-    })`)
+    })
+   --[[while wait(1) do
+        pcall(function()
+            game:HttpGet("http://localhost:7964/?messageType=ping&gameId=" .. game.GameId .. "&gameName=" .. game:GetService("HttpService"):UrlEncode(game.Name))
+        end)
+    end]]
+    `)
     ;(function(cb) {
         if (arg) {
             try {

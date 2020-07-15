@@ -5,7 +5,16 @@ const path = require("path")
 const homedir = require('os').homedir();
 const child_process = require('child_process')
 const fetch = require("node-fetch")
-
+const http = require("http")
+const url = require('url');
+var httpListener = function(){}
+try {
+    http.createServer(function(req,res) {
+        if (typeof httpListener == "function") {httpListener(req,res)}
+    }).listen(7964)
+} catch(e) {
+    console.error(e)
+}
 
 const CALAMARI_API_LOCATION = "/Users/Shared/Calamari"
 const DEFAULT_CAPPS_LOCATION = path.join(homedir,"Documents","CalamariApps")
@@ -20,16 +29,20 @@ function createWindow () {
     if (!fs.existsSync(path.join(DEFAULT_CAPPS_LOCATION,"CalamariHookHelperTool"))) {
         var installCalamari = dialog.showMessageBoxSync({
             type: "error",
-            buttons: ["No","Yes"],
-            defaultId: 1,
-            message: "Calamari not installed",
-            detail: "Calamari-M is not installed, would you like to install it now?",
+            buttons: ["Full Install","Yes","No, quit."],
+            defaultId: 2,
+            message: "CalamariHooker not installed",
+            detail: "CalamariHooker is not installed, would you like to install it now?\n\n",
         })
+        console.log(installCalamari)
+        if (installCalamari > 1 || installCalamari < 0) return process.exit();
         if (installCalamari == 1) {
-            child_process.execSync(`mkdir "${DEFAULT_CAPPS_LOCATION}";cd ${DEFAULT_CAPPS_LOCATION};curl https://cdn.calamari.cc/C-M.zip > C-M.zip; curl https://cdn.calamari.cc/Dependencies.zip > deps.zip; unzip C-M.zip;unzip deps.zip;rm -rf C-M.zip deps.zip __MACOSX;`)
+            child_process.execSync(`rm -rf "${DEFAULT_CAPPS_LOCATION}";mkdir "${DEFAULT_CAPPS_LOCATION}";cd ${DEFAULT_CAPPS_LOCATION}; curl https://cdn.calamari.cc/Dependencies.zip > deps.zip;unzip deps.zip;rm -rf deps.zip __MACOSX;`)
             return createWindow()
-        } else {
-            return process.exit()
+        }
+        if (installCalamari == 0) {
+            child_process.execSync(`rm -rf "${DEFAULT_CAPPS_LOCATION}";mkdir "${DEFAULT_CAPPS_LOCATION}";cd ${DEFAULT_CAPPS_LOCATION};curl https://cdn.calamari.cc/C-M.zip > C-M.zip; curl https://cdn.calamari.cc/Dependencies.zip > deps.zip; unzip C-M.zip;unzip deps.zip;rm -rf C-M.zip deps.zip __MACOSX;`)
+            return createWindow()
         }
     }
     if (dialog.showMessageBoxSync({
@@ -123,6 +136,11 @@ function createWindow () {
             win.show()
             win.webContents.setZoomFactor(1);
             win.webContents.setVisualZoomLevelLimits(1, 1);
+            httpListener = function(req,res) {
+                var queryObject = url.parse(req.url,true).query;
+                console.log(queryObject)
+                win.webContents.send("http-request",queryObject)
+            }
             try {
                 var j = await (await fetch("https://api.github.com/repos/thelmgn/Jellyfish/releases")).json()
                 var cv = require("./package.json").version

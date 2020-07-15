@@ -23,7 +23,8 @@
                     <div id="mainMonaco" style="width:100vw;height:calc(100vh - 56px);"></div>
                     <button id="runFab" class="fabulous shadow"><img src="./assets/play_arrow-black-18dp.svg"/>  </button>
                 </div>
-                <div id="settingsContainer" class="container" style="left:100vw;margin-top: 10px">
+                <div id="settingsContainer" class="container" style="left:100vw;margin-top: 0px;overflow: auto;overflow-x: hidden;">
+                    <h2>Tools</h2>
                     <div class="slider" id="speedSlider">
                         <div class="sliderHeader">
                             <div class="sliderHeaderText">Walk Speed</div>
@@ -52,10 +53,21 @@
                         </div>
                         <input type="range" class="fullwidth" onchange="runScript('game.Workspace.Gravity = ' + this.value)" max="500" value="196.2" min="0"/>
                     </div>
+                    <h2>Jellyfish Options</h2>
+                    <div class="slider" id="colourSlider">
+                        <div class="sliderHeader">
+                            <div class="sliderHeaderText">Colour Picker</div>
+                            <div class="sliderHeaderReset"><button class="simpleButton" onclick="this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).value = 356;this.parentNode.parentNode.parentNode.querySelector(`input[type='range']`).onchange()">Reset</button></div>
+                        </div>
+                        <input id="hueSlider" type="range" class="fullwidth" onmousedown="startChangingColor(this)" onmouseup="stopChangingColor(this)" onchange="changeColor(this.value)" max="360" value="356" min="0"/>
+                    </div><br>
                     <input id="alwaysOnTop" onchange="ipcRenderer.send('set-topmost',this.checked)" type="checkbox" style="margin-left: 8px;">
                     <label for="alwaysOnTop">Stay on top?</label>
                     <input id="alternativeElevation" onchange="localStorage.setItem('usesAlternativeElevation',this.checked)" type="checkbox" style="margin-left: 8px;">
-                    <label for="alternativeElevation">Use alternative elevation method</label>
+                    <label for="alternativeElevation">Use alternative elevation method</label><br><br>
+                    
+                    If you're having injection troubles, or the regular Calamari app has broken, you might want to reinstall Calamari.<br>
+                    <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='reinstallCalamari()'>Reinstall Calamari</button>
                     <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br>check <a target="_blank" class="link" href="https://thelmgn.com/jellyfish">https://thelmgn.com/jellyfish</a> for updates and support<br><br><b>Thanks:</b><br>Inspect - Calamari-M
                         </div>
                 </div>
