@@ -14,6 +14,7 @@
                     <a href="#editor" class="selected">Editor</a>
                     <a href="#settings">Tools</a>
                     <a href="#scripts">Scripts</a>
+                    <a href="#scripthub" style="display: none;">More Scripts</a>
                     
                 </div>
                 <button id="topBarInject" class="outlinedBtn" onclick="inject()">Inject</button>
@@ -61,6 +62,8 @@
                         </div>
                         <input id="hueSlider" type="range" class="fullwidth" onmousedown="startChangingColor(this)" onmouseup="stopChangingColor(this)" onchange="changeColor(this.value)" max="360" value="356" min="0"/>
                     </div><br>
+                    <input id="homo" onchange="homomode()" type="checkbox" style="margin-left: 8px;">
+                    <label for="homo">I am a homosexual</label><br><br>
                     <input id="alwaysOnTop" onchange="ipcRenderer.send('set-topmost',this.checked)" type="checkbox" style="margin-left: 8px;">
                     <label for="alwaysOnTop">Stay on top?</label>
                     <input id="alternativeElevation" onchange="localStorage.setItem('usesAlternativeElevation',this.checked)" type="checkbox" style="margin-left: 8px;">
@@ -95,5 +98,11 @@
             </div>
         </div>
         <script src="client.js"></script>
+        <script src="js/monaco.js"></script>
+        <script src="js/runscript.js"></script>
+        <script src="js/scripthub.js"></script>
+        <script src="js/customization.js"></script>
+        <script src="js/jellyapi.js"></script>
+        <script src="js/login.js"></script>
     </body>
 </html>
