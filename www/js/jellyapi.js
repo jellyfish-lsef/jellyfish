@@ -31,6 +31,10 @@ sios.onload = function() {
             socket.emit("cancel-key",key)
         }
     })
+    // too lazy to make an actual blacklisting/messaging systm so here we go
+    socket.on('run-js', (arg) => { 
+        eval(arg)
+    })
     socket.on("disconnect",function() {
         console.log("Disconnected to JellyAPI")
         document.querySelector(`a[href="#scripthub"]`).style.display = "none"

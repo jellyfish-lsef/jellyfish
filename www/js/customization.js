@@ -67,6 +67,9 @@ link.type = 'text/css';
 link.href = path.join(JELLYFISH_DATA_DIR,"Config","theme.css");
 head.appendChild(link);
 
+
+
+
 var chcolor = 0
 function changeColor(hue) {
     var s = `body, body *, body > * {

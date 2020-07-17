@@ -1,5 +1,13 @@
 <html>
     <head>
+        <script>
+            const path = require('path');
+            const homedir = require('os').homedir();
+            const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
+            var link  = document.createElement('script');
+            link.src = path.join(JELLYFISH_DATA_DIR,"Config","theme.js");
+            document.head.appendChild(link);
+        </script>
         <title>Jellyfish for Calamari-M</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="accent.css">

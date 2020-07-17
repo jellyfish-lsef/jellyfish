@@ -1,6 +1,6 @@
 const webFrame =  require('electron').webFrame
 const dialog =  require('electron').remote.dialog
-const path = require('path');
+
 const fs = require("fs")
 const { ipcRenderer } = require('electron')
 
@@ -10,8 +10,7 @@ const runFab = document.querySelector("#runFab")
 const scriptsContainer = document.querySelector("#scriptsSidebar")
 const searchBox = document.querySelector("#searchBox")
 
-const homedir = require('os').homedir();
-const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
+
 
 window.onhashchange = function(h) {
     var hash = location.hash
