@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thelmgn/jellyfish.git"
+    "url": "git+https://github.com/jellyfish-lsef/jellyfish.git"
   },
   "author": "theLMGN",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/thelmgn/jellyfish/issues"
+    "url": "https://github.com/jellyfish-lsef/jellyfish/issues"
   },
-  "homepage": "https://github.com/thelmgn/jellyfish#readme",
+  "homepage": "https://github.com/jellyfish-lsef/jellyfish#readme",
   "dependencies": {
     "electron": "^9.0.5",
     "monaco-editor": "^0.20.0",

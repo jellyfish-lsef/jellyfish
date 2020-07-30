@@ -144,7 +144,7 @@ function createWindow () {
                 win.webContents.send("http-request",queryObject)
             }
             try {
-                var j = await (await fetch("https://api.github.com/repos/thelmgn/Jellyfish/releases")).json()
+                var j = await (await fetch("https://api.github.com/repositories/273986462/releases")).json()
                 var cv = require("./package.json").version
                 var nv = j[0].tag_name
                 console.log(j[0].tag_name,cv)
