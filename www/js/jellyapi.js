@@ -1,4 +1,4 @@
-const API_ENDPOINT = "https://jellyfish-api.thelmgn.com"
+const API_ENDPOINT = location.toString().startsWith("file:///Users/thelmgn/Documents/GitHub/jellyfish/www/index.html") ? "http://127.0.0.1:7961" : "https://jellyfish-api.thelmgn.com"
 const DISCORD_CLIENTID = '733148416309330065';
 
 const RPC = require("discord-rpc")

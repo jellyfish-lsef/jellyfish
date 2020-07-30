@@ -1,3 +1,4 @@
+const { fstat } = require('fs')
 
 
 function inject() {
@@ -22,6 +23,28 @@ ipcRenderer.on("script-ran",() => {
 })
 runFab.onclick = function() {
     ipcRenderer.send("run-script",mainEditor.getValue())
+}
+
+saveFab.onclick = function() {
+    var win = require('electron').remote.getCurrentWindow()
+    var script = mainEditor.getValue()
+    
+    var loc = dialog.showSaveDialogSync(win, {
+        title: "Save Current Script",
+        defaultPath: path.join(homedir,"Documents","Jellyfish","Scripts"),
+        buttonLabel: "Save",
+        message:"Choose where you want to save the current script in the editor.",
+        filters: [{extensions: ["lua","txt"]}]
+    })
+    if (!loc.endsWith(".lua") && !loc.endsWith(".txt")) {
+        loc += ".lua"
+    }
+    fs.writeFileSync(loc,script)
+}
+
+function editScript(script) {
+    mainEditor.setValue(script)
+    location.hash = "#editor"
 }
 
 function runScript(a) {

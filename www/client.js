@@ -2,11 +2,13 @@ const webFrame =  require('electron').webFrame
 const dialog =  require('electron').remote.dialog
 
 const fs = require("fs")
+const os = require("os")
 const { ipcRenderer } = require('electron')
 
 const mainContainer = document.querySelector("#mainContainer")
 const injectBtn = document.querySelector("#topBarInject")
 const runFab = document.querySelector("#runFab")
+const saveFab = document.querySelector("#saveFab")
 const scriptsContainer = document.querySelector("#scriptsSidebar")
 const searchBox = document.querySelector("#searchBox")
 

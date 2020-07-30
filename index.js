@@ -166,6 +166,14 @@ function createWindow () {
             //win.webContents.setLayoutZoomLevelLimits(0, 0);
         },300)
     })
+
+
+
+    protocol.registerFileProtocol('jellyfish-lsef', (request, callback) => {
+        console.log(request,callback)
+      }, (error) => {
+        if (error) console.error('Failed to register protocol')
+      })
 }
 
 app.whenReady().then(createWindow)

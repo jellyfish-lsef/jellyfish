@@ -173,7 +173,7 @@ a {
     text-align: center;
     padding:0;
     background-size: 100% 100%;
-    transition: 1s background-size, 1s box-shadow;
+    transition: 0.5s background-size, 0.3s box-shadow;
 }
 
 .fabulous:hover {
@@ -186,6 +186,17 @@ a {
 .fabulous > img {
     width: 45px;
 }
+
+#saveFab {
+    bottom: 100px;
+    width:60px;
+    height: 60px;
+    right: 29px;
+}
+#saveFab > img {
+    width: 35px;
+}
+
 @keyframes spin {
     from {transform: rotate(0deg);}
     to {transform: rotate(360deg);}
@@ -335,12 +346,20 @@ b {
     position: absolute;
     height: 35px;
     border-radius:17.5px;
-    width: 60vw;
-    right:18px;
+    width: calc(60vw - 45px);
+    right:67px;
     color: #fff;
     font-family: "GothamSSm-Black";
     font-size: 20px;
-    transition: 0.5s background-size, 0.5s box-shadow;
+    transition: 0.5s background-size, 0.3s box-shadow;
+}
+.highlightedBtn > img{
+    width: 25px;
+}
+#editBtn {
+    width: 35px;
+    height:35px;
+    right: 20px;
 }
 
 #loginContainer {

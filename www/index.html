@@ -31,6 +31,7 @@
                 <div id="editorContainer" class="container">
                     <div id="mainMonaco" style="width:100vw;height:calc(100vh - 56px);"></div>
                     <button id="runFab" class="fabulous shadow"><img src="./assets/play_arrow-black-18dp.svg"/>  </button>
+                    <button id="saveFab" class="fabulous shadow"><img src="./assets/save-black-18dp.svg"/>  </button>
                 </div>
                 <div id="settingsContainer" class="container" style="left:100vw;margin-top: 0px;overflow: auto;overflow-x: hidden;">
                     <h2>Tools</h2>
@@ -92,6 +93,7 @@
                         <h3>.You'll be able to edit the script before running it</h3>
                         <div id="previwMonaco" style="width:65vw;height:calc(100vh - 122px); background: #f00;margin-left:-8px;margin-top:8px;"></div>
                         <button id="runScript" class="fabulous shadow highlightedbtn"  onclick='runScript(previewEditor.getValue())''>Run Script</button>
+                        <button id="editBtn" class="fabulous shadow highlightedbtn"  onclick='editScript(previewEditor.getValue())''><img src="./assets/edit-white-18dp.svg"/></button>
                     </div>
                 </div>
             </div>
