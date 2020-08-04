@@ -8,7 +8,7 @@
             link.src = path.join(JELLYFISH_DATA_DIR,"Config","theme.js");
             document.head.appendChild(link);
         </script>
-        <title>Jellyfish for Calamari-M</title>
+        <title>Jellyfish</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="accent.css">
         <link rel="stylesheet" href="index.css">
@@ -72,15 +72,21 @@
                         <input id="hueSlider" type="range" class="fullwidth" onmousedown="startChangingColor(this)" onmouseup="stopChangingColor(this)" onchange="changeColor(this.value)" max="360" value="356" min="0"/>
                     </div><br>
                     <input id="homo" onchange="homomode()" type="checkbox" style="margin-left: 8px;">
-                    <label for="homo">I am a homosexual</label><br><br>
+                    <label for="homo">I am a homosexual</label>
                     <input id="alwaysOnTop" onchange="ipcRenderer.send('set-topmost',this.checked)" type="checkbox" style="margin-left: 8px;">
                     <label for="alwaysOnTop">Stay on top?</label>
-                    <input id="alternativeElevation" onchange="localStorage.setItem('usesAlternativeElevation',this.checked)" type="checkbox" style="margin-left: 8px;">
-                    <label for="alternativeElevation">Use alternative elevation method</label><br><br>
-                    
-                    If you're having injection troubles, or the regular Calamari app has broken, you might want to reinstall Calamari.<br>
-                    <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='reinstallCalamari()'>Reinstall Calamari</button>
-                    <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br>check <a target="_blank" class="link" href="https://jellyfish.thelmgn.com/">https://jellyfish.thelmgn.com/</a> for updates and support<br><br><b>Thanks:</b><br>Inspect - Calamari-M
+                    <div id="calamariOptions">
+                        <h2>Calamari Options</h2>
+                        <input id="alternativeElevation" onchange="localStorage.setItem('usesAlternativeElevation',this.checked)" type="checkbox" style="margin-left: 8px;">
+                        <label for="alternativeElevation">Use alternative elevation method</label><br><br>
+                        
+                        If you're having injection troubles, or the regular Calamari app has broken, you might want to reinstall Calamari.<br>
+                        <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='reinstallCalamari()'>Reinstall Calamari</button>
+                    </div>
+                    <script>
+                        document.querySelector("#calamariOptions").style.display = require("os").platform() == "win32" ? "none" : "block"
+                    </script>
+                    <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br>check <a target="_blank" class="link" href="https://jellyfish.thelmgn.com/">https://jellyfish.thelmgn.com/</a> for updates and support
                         </div>
                 </div>
                 <div id="scriptsContainer" class="container" style="left:200vw;">
