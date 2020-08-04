@@ -105,7 +105,7 @@ function createWindow () {
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))) {
         fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))
-        console.log(child_process.execSync(`cd ${path.join(JELLYFISH_DATA_DIR,"Scripts")};curl http://thelmgn.com/jellyfish/Jellyfish_Default_Scripts.zip > default.zip;unzip default.zip; rm default.zip`).toString())
+        console.log(child_process.execSync(`cd ${path.join(JELLYFISH_DATA_DIR,"Scripts")};curl http://jellyfish.thelmgn.com/Jellyfish_Default_Scripts.zip > default.zip;unzip default.zip; rm default.zip`).toString())
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Config"))) {
         fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Config"))

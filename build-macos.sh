@@ -1,9 +1,7 @@
 echo "[macOS] Building"
 VERSION="$(node ./getVersion.js)"
 mkdir builds
-mv docs ~/JellyfishBuilderDocsTemp
 electron-packager . Jellyfish --exclude=docs --app-version "$VERSION" --protocol=jellyfish-lsef --platform darwin --out ./builds --overwrite --icon ./www/assets/icon.icns --asar --app-copyright "(c) 2020 theLMGN - Do not redistribute. Provided with NO warranty" --app-bundle-id com.thelmgn.jellyfish --darwin-dark-mode-support
-mv ~/JellyfishBuilderDocsTemp docs
 cd ./builds
 mv Jellyfish-darwin-x64 "Jellyfish-$VERSION"
 cd "Jellyfish-$VERSION"
