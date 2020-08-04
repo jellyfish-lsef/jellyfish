@@ -89,9 +89,17 @@ function createWindow () {
     win.loadFile('www/index.html')
     win.webContents.on('new-window', function(event, url){
         event.preventDefault();
-        child_process.spawn(process.platform == 'darwin'? 'open' : 'start', [url])
+        openUrl(url)
     });
     
+    function openUrl(url) {
+        if (process.platform == "darwin") {
+            child_process.spawnSync("open",[url])
+        } else {
+            child_process.spawnSync("cmd",["/s","/c","start",url,"/b"])
+        }
+    }
+
     win.once('ready-to-show', () => {
         
         setTimeout(async function() {
@@ -106,21 +114,24 @@ function createWindow () {
             try {
                 var j = await (await fetch("https://api.github.com/repositories/273986462/releases")).json()
                 var cv = require("./package.json").version
-                var nv = j[0].tag_name
-                console.log(j[0].tag_name,cv)
-                if (cv != nv) {
-                    console.log("diff vers")
-                    
-                    for (var a of j[0].assets) {
-                        if (a.name.includes(process.platform)) {
-                            var update = dialog.showMessageBoxSync(win,{
-                                buttons: ["No","Yes"],
-                                defaultId: 1,
-                                message: "Not latest version",
-                                detail: `The latest version of Jellyfish is ${nv}, you're running ${cv}, would you like to update now?\n\nChangelog:\n${j[0].body}`,
-                            })
-                            if (update) {
-                                return child_process.spawn(process.platform == 'darwin'? 'open' : 'start', [j[0].assets[0].browser_download_url])
+                for (var r of j) {
+                    var nv = r.tag_name
+                    console.log(r.tag_name,cv)
+                    if (cv != nv) {
+                        console.log("diff vers")
+                        
+                        for (var a of r.assets) {
+                            if (!a.name.includes(process.platform)) {
+                                var update = dialog.showMessageBoxSync(win,{
+                                    buttons: ["No","Yes"],
+                                    defaultId: 1,
+                                    message: "Not latest version",
+                                    detail: `The latest version of Jellyfish is ${nv}, you're running ${cv}, would you like to update now?\n\nChangelog:\n${r.body}`,
+                                })
+                                if (update) {
+                                    return openUrl(a.browser_download_url)
+                                }
+                                return
                             }
                         }
                     }
