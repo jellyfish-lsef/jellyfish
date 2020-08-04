@@ -1,19 +1,19 @@
 
 @font-face {
     font-family: 'GothamSSm-Black'; 
-    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Black.otf');
+    src: url('./assets/GothamSSm-Book.otf');
 }
 @font-face {
     font-family: 'GothamSSm-Bold'; 
-    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Bold.otf');
+    src: url('./assets/GothamSSm-Bold.otf');
 }
 @font-face {
     font-family: 'GothamSSm-Medium'; 
-    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Medium.otf');
+    src: url('./assets/GothamSSm-Medium.otf');
 }
 @font-face {
     font-family: 'GothamSSm-Book'; 
-    src: url('file:///Applications/Roblox.app/Contents/Resources/content/fonts/GothamSSm-Book.otf');
+    src: url('./assets/GothamSSm-Book.otf');
 }
 
 @import url("./accent.css");

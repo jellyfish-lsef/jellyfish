@@ -84,7 +84,7 @@ ipcRenderer.on('http-request',(e,data) => {
             document.title = "Jellyfish for Calamari-M | Injected"
         }
         lastPingInterval = setTimeout(function() {
-            document.title = "Jellyfish for Calamari-M"
+            document.title = "Jellyfish"
         },2000)
     }
 })
