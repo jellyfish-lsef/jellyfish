@@ -1,2 +1,2 @@
 bash build-macos.sh
-bash build-windows.bat
+bash build-windows.sh

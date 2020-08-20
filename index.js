@@ -23,8 +23,36 @@ try {
 const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
 global.JELLYFISH_DATA_DIR = JELLYFISH_DATA_DIR
 
+var supportedExploits = [
+    "null",
+]
+if (process.platform == "win32") {
+    supportedExploits.push("synx")
+}
+if (process.platform == "darwin") {
+    supportedExploits.push("calamari")
+}
+var udr = app.getPath('userData')
+if (!fs.existsSync(udr)) {fs.mkdirSync(udr)}
+function getPreferedExploit() {
+    try {
+        if (fs.existsSync(path.join(udr,"preferedExploit.txt"))) {
+            var fc = fs.readFileSync(path.join(udr,"preferedExploit.txt"))
+            if (supportedExploits.includes(fc.toString())) {
+                return fc.toString()
+            } else {
+                return "null"
+            }
+        } else {
+            return "null"
+        }
+    } catch(e) {
+        return "null"
+    }
+}
+
 function createWindow () {
-    global.exploit = require("./exploits/" + (windows ? "synx" : "calamari"))
+    global.exploit = require("./exploits/" + (windows ? getPreferedExploit() : "calamari"))
     if (dialog.showMessageBoxSync({
         buttons: ["No","Yes"],
         defaultId: 1,
@@ -85,7 +113,20 @@ function createWindow () {
         key = ckey
         traverse(key,evt)
     })
-    
+    ipcMain.on("switch-exploit", (evt,exploit) => {
+        if (supportedExploits.includes(exploit)) {
+             fs.writeFileSync(path.join(udr,"preferedExploit.txt"),exploit)
+             dialog.showMessageBoxSync(win,{
+                buttons: ["Restart"],
+                defaultId: 1,
+                message: "Restart required.",
+                detail: `Jellyfish requires a restart to switch exploit.`,
+            })
+            app.quit()
+        } else {
+            console.error(exploit,"isn't a valid exploit.")
+        }
+    })
     // and load the index.html of the app.
     win.loadFile('www/index.html')
     win.webContents.on('new-window', function(event, url){

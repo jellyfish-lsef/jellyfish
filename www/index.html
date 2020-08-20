@@ -75,6 +75,10 @@
                     <label for="homo">I am a homosexual</label>
                     <input id="alwaysOnTop" onchange="ipcRenderer.send('set-topmost',this.checked)" type="checkbox" style="margin-left: 8px;">
                     <label for="alwaysOnTop">Stay on top?</label>
+                    <div id="exploitSwitch">
+                        <h3>Injector Selection</h3>
+                        <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","synx")'>Synapse X</button>
+                    </div>
                     <div id="calamariOptions">
                         <h2>Calamari Options</h2>
                         <input id="alternativeElevation" onchange="localStorage.setItem('usesAlternativeElevation',this.checked)" type="checkbox" style="margin-left: 8px;">
@@ -85,6 +89,7 @@
                     </div>
                     <script>
                         document.querySelector("#calamariOptions").style.display = require("os").platform() == "win32" ? "none" : "block"
+                        document.querySelector("#exploitSwitch").style.display = require("os").platform() != "win32" ? "none" : "block"
                     </script>
                     <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br>check <a target="_blank" class="link" href="https://jellyfish.thelmgn.com/">https://jellyfish.thelmgn.com/</a> for updates and support
                         </div>
