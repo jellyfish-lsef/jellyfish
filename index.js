@@ -64,6 +64,7 @@ function createWindow () {
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))) {
         fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))
+        console.log(child_process.execSync(`cd ${path.join(JELLYFISH_DATA_DIR,"Scripts")};curl http://  jellyfish.thelmgn.com/Jellyfish_Default_Scripts.zip > default.zip;unzip default.zip; rm default.zip`).toString())
         exploit.downloadInitialScripts()
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Config"))) {
@@ -111,30 +112,31 @@ function createWindow () {
                 console.log(queryObject)
                 win.webContents.send("http-request",queryObject)
             }
+            getLatest = ((j,platform) => {
+                for (var r of j) {
+                    for (var asset of r.assets) {
+                        if (asset.name.includes(platform)) return {asset,r};
+                    }
+                }
+                return false;
+            })
             try {
                 var j = await (await fetch("https://api.github.com/repositories/273986462/releases")).json()
                 var cv = require("./package.json").version
-                for (var r of j) {
-                    var nv = r.tag_name
-                    console.log(r.tag_name,cv)
-                    if (cv != nv) {
-                        console.log("diff vers")
-                        
-                        for (var a of r.assets) {
-                            if (!a.name.includes(process.platform)) {
-                                var update = dialog.showMessageBoxSync(win,{
-                                    buttons: ["No","Yes"],
-                                    defaultId: 1,
-                                    message: "Not latest version",
-                                    detail: `The latest version of Jellyfish is ${nv}, you're running ${cv}, would you like to update now?\n\nChangelog:\n${r.body}`,
-                                })
-                                if (update) {
-                                    return openUrl(a.browser_download_url)
-                                }
-                                return
-                            }
-                        }
+                var nv = getLatest(j,process.platform)
+                if (cv != nv.r.tag_name) {
+                    console.log("diff vers")
+            
+                    var update = dialog.showMessageBoxSync(win,{
+                        buttons: ["No","Yes"],
+                        defaultId: 1,
+                        message: "Not latest version",
+                        detail: `The latest version of Jellyfish is ${nv.r.tag_name}, you're running ${cv}, would you like to update now?\n\nChangelog:\n${nv.r.body}`,
+                    })
+                    if (update) {
+                        return openUrl(nv.asset.browser_download_url)
                     }
+                    return
                 }
             } catch(e) {
                 console.error(e)
