@@ -6,7 +6,7 @@ cd ./builds
 mv Jellyfish-darwin-x64 "Jellyfish-$VERSION"
 cd "Jellyfish-$VERSION"
 
-zip -r9 "Jellyfish-$VERSION.zip" Jellyfish.app
+#zip -r9 "Jellyfish-$VERSION.zip" Jellyfish.app
 mv "Jellyfish-$VERSION.zip" ../
 cd ../..
 #rm -rf "builds"
