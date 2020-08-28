@@ -89,4 +89,15 @@ ipcRenderer.on('http-request',(e,data) => {
     }
 })
 
+const exploits = {
+    null: "nullExploit",
+    calamari: "Calamari-M",
+    sirhurt: "SirHurt",
+    synx: "Synapse X"
+}
+
+ipcRenderer.on('set-exploit',(e,data) => {
+    exploit = data
+    document.title = "Jellyfish for " + exploits[data]
+})
 document.querySelector("#alternativeElevation").checked = localStorage.getItem("usesAlternativeElevation") == "true"

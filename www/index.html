@@ -77,7 +77,8 @@
                     <label for="alwaysOnTop">Stay on top?</label>
                     <div id="exploitSwitch">
                         <h3>Injector Selection</h3>
-                        <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","synx")'>Synapse X</button>
+                        <button id="exploit-synx" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","synx")'>Synapse X</button>
+                        <button id="exploit-sirhurt" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","sirhurt")'>SirHurt</button>
                     </div>
                     <div id="calamariOptions">
                         <h2>Calamari Options</h2>

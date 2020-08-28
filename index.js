@@ -27,7 +27,7 @@ var supportedExploits = [
     "null",
 ]
 if (process.platform == "win32") {
-    supportedExploits.push("synx")
+    supportedExploits.push("synx","sirhurt")
 }
 if (process.platform == "darwin") {
     supportedExploits.push("calamari")
@@ -51,9 +51,10 @@ function getPreferedExploit() {
     }
 }
 
-function createWindow () {
-    global.exploit = require("./exploits/" + (windows ? getPreferedExploit() : "calamari"))
-    if (dialog.showMessageBoxSync({
+async function createWindow () {
+    global.exploitName = (windows ? getPreferedExploit() : "calamari")
+    global.exploit = require("./exploits/" + exploitName)
+    if (false && dialog.showMessageBoxSync({
         buttons: ["No","Yes"],
         defaultId: 1,
         message: "PLEASE READ",
@@ -92,7 +93,10 @@ function createWindow () {
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))) {
         fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))
-        console.log(child_process.execSync(`cd ${path.join(JELLYFISH_DATA_DIR,"Scripts")};curl http://  jellyfish.thelmgn.com/Jellyfish_Default_Scripts.zip > default.zip;unzip default.zip; rm default.zip`).toString())
+        //console.log(child_process.execSync(`cd;curl  > default.zip;unzip default.zip; rm default.zip`).toString())
+        var f = await fetch('http://jellyfish.thelmgn.com/Jellyfish_Default_Scripts.zip')
+        var b = await f.buffer()
+        require("extract-zip")(b, { dir: path.join(JELLYFISH_DATA_DIR,"Scripts") })
         exploit.downloadInitialScripts()
     }
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Config"))) {
@@ -161,6 +165,7 @@ function createWindow () {
                 }
                 return false;
             })
+            win.webContents.send("set-exploit",global.exploitName)
             try {
                 var j = await (await fetch("https://api.github.com/repositories/273986462/releases")).json()
                 var cv = require("./package.json").version

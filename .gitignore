@@ -3,3 +3,8 @@ builds
 .DS_Store
 *.app/
 *.otf
+*.exe.dll
+config.jdx
+*.dat
+SirHurt.dll
+SirHurtInjector.dll
