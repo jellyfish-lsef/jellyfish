@@ -93,11 +93,13 @@ const exploits = {
     null: "nullExploit",
     calamari: "Calamari-M",
     sirhurt: "SirHurt",
-    synx: "Synapse X"
+    synx: "Synapse X",
+    fluxus: "Fluxus"
 }
 
 ipcRenderer.on('set-exploit',(e,data) => {
     exploit = data
     document.title = "Jellyfish for " + exploits[data]
+    document.querySelector("#reinstallCalamari").style.display = data == "calamari" ? "block" : "none"
 })
 document.querySelector("#alternativeElevation").checked = localStorage.getItem("usesAlternativeElevation") == "true"

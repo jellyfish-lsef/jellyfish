@@ -77,20 +77,28 @@
                     <label for="alwaysOnTop">Stay on top?</label>
                     <div id="exploitSwitch">
                         <h3>Injector Selection</h3>
-                        <button id="exploit-synx" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","synx")'>Synapse X</button>
-                        <button id="exploit-sirhurt" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","sirhurt")'>SirHurt</button>
+                        <div id="winExploits">
+                            <button id="exploit-synx" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","synx")'>Synapse X</button>
+                            <button id="exploit-sirhurt" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","sirhurt")'>SirHurt</button>
+                        </div>
+                        <div id="macExploits">
+                            <button id="exploit-calamari" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","calamari")'>Calamari-M</button>
+                            <button id="exploit-fluxus" class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='ipcRenderer.send("switch-exploit","fluxus")'>Fluxus</button>
+                        </div>
                     </div>
                     <div id="calamariOptions">
-                        <h2>Calamari Options</h2>
+                        <h2>Injection Options</h2>
                         <input id="alternativeElevation" onchange="localStorage.setItem('usesAlternativeElevation',this.checked)" type="checkbox" style="margin-left: 8px;">
                         <label for="alternativeElevation">Use alternative elevation method</label><br><br>
-                        
-                        If you're having injection troubles, or the regular Calamari app has broken, you might want to reinstall Calamari.<br>
-                        <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='reinstallCalamari()'>Reinstall Calamari</button>
+                        <div id="reinstallCalamari" style="display: none;">
+                            If you're having injection troubles, or the regular Calamari app has broken, you might want to reinstall Calamari.<br>
+                            <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='reinstallCalamari()'>Reinstall Calamari</button>
+                        </div>
                     </div>
                     <script>
-                        document.querySelector("#calamariOptions").style.display = require("os").platform() == "win32" ? "none" : "block"
-                        document.querySelector("#exploitSwitch").style.display = require("os").platform() != "win32" ? "none" : "block"
+                        document.querySelector("#calamariOptions").style.display = require("os").platform() != "darwin" ? "none" : "block"
+                        document.querySelector("#macExploits").style.display = require("os").platform() != "darwin" ? "none" : "block"
+                        document.querySelector("#winExploits").style.display = require("os").platform() != "win32" ? "none" : "block"
                     </script>
                     <div class="attribution"><hr>made by <a target="_blank" class="link" href="https://thelmgn.com">theLMGN</a> in 2020.<br>check <a target="_blank" class="link" href="https://jellyfish.thelmgn.com/">https://jellyfish.thelmgn.com/</a> for updates and support
                         </div>

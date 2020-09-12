@@ -30,7 +30,7 @@ if (process.platform == "win32") {
     supportedExploits.push("synx","sirhurt")
 }
 if (process.platform == "darwin") {
-    supportedExploits.push("calamari")
+    supportedExploits.push("calamari","fluxus")
 }
 var udr = app.getPath('userData')
 if (!fs.existsSync(udr)) {fs.mkdirSync(udr)}
@@ -52,7 +52,7 @@ function getPreferedExploit() {
 }
 
 async function createWindow () {
-    global.exploitName = (windows ? getPreferedExploit() : "calamari")
+    global.exploitName = (getPreferedExploit())
     global.exploit = require("./exploits/" + exploitName)
     if (false && dialog.showMessageBoxSync({
         buttons: ["No","Yes"],

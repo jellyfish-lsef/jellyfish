@@ -1,6 +1,6 @@
 body, body *, body > * {
-    --background-main: #fff;
     --text-main:#222;
+    --background-main: #fff;
     --text-onaccent: #fff;
     --accent-bright: #E51E10;
     --accent-dark: #A20F05;
