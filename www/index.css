@@ -18,6 +18,27 @@
 
 @import url("./accent.css");
 
+
+/* Only change anything below this line if you know what you're doing */
+@keyframes gay {
+    from {
+        --accent-bright: hsl(0,87%,48%);
+        --accent-dark: hsl(0,94%,48%);
+        --accent-verydark: hsl(0,88%,33%);
+    }
+    to {
+        --accent-bright: hsl(359,87%,48%);
+        --accent-dark: hsl(359,94%,48%);
+        --accent-verydark: hsl(359,88%,33%);
+    }
+}
+
+.gay, .gay *, .gay > * {
+    animation-name: gay;
+    animation-duration: 3.6s;
+    animation-iteration-count: infinite;
+}
+
 *, *::after, *::before {
     -webkit-user-select: none;
     -webkit-user-drag: none;
@@ -36,7 +57,7 @@ body {
     margin:0;
     background: var(--background-main);
     color: var(--text-main);
-    font-family: 'GothamSSm-Medium', sans-serif;
+    font-family: var(--font-medium);
     user-select: none;
 }
 
@@ -62,7 +83,7 @@ body {
     background: transparent;
     color: var(--text-onaccent);
     font-size: 15px;
-    font-family: GothamSSm-Bold, sans-serif;
+    font-family: var(--font-bold);
     border-radius: 25px;
     padding: 5px;
     padding-left: 20px;
@@ -107,12 +128,12 @@ button:focus,input:focus {
 }
 #topBarNavi > .selected {
     opacity: 1;
-    font-family: GothamSSm-Bold,sans-serif;
+    font-family: var(--font-bold);
     pointer-events: none;
 }
 
 a {
-    color: #fff;
+    color: var(--text-onaccent);
     text-decoration: none;
 }
 .shadow {
@@ -133,17 +154,11 @@ a {
     width: 100vw;
     overflow: hidden;
 }
-/* uncomment for brandless */
-/**.topBarBrand {
-    display:none;
-}
-#topBarNavi {
-    text-align: left;
-}**/
+
 .attribution {
     text-align: center;
     width:100vw;
-    font-family: "GothamSSm-Book", sans-serif;
+    font-family: var(--font-light);
     font-size: 10px;
     opacity: 0.5;
     transition: 0.2s opacity;
@@ -157,7 +172,7 @@ a {
 }
 .link {
     text-decoration: underline;
-    font-family: "GothamSSm-Medium",sans-serif;
+    font-family: var(--font-medium);
 }
 
 .fabulous {
@@ -215,14 +230,14 @@ a {
     width:100%;
 }
 .simpleButton {
-    background: #555;
-    color: #fff;
+    background: var(--button-background);
+    color: var(--button-text);
     border-radius: 5px;
-    box-shadow: 0px 0px 5px #555;
+    box-shadow: 0px 0px 5px var(--button-background);
     -webkit-appearance: none;
     border: none;
     padding: 5px;
-    font-family: "GothamSSm-Medium"
+    font-family: var(--font-medium);
 }
 input[type=range] {
     -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
@@ -245,7 +260,7 @@ input[type=range]::-webkit-slider-runnable-track {
     background: var(--accent-bright);
 }
 b {
-    font-family: "GothamSSm-Bold"
+    font-family: var(--font-bold);
 }
 
 #scriptsSidebar {
@@ -262,14 +277,16 @@ b {
     left:0;
     background: transparent;
     border: none;
-    border-bottom: 2px solid #707070;
-    font-family: "GothamSSm-Bold";
+    border-bottom: 2px solid var(--button-background);
+    font-family: var(--font-bold);
     width: 35vw;
     height: 45px;
     font-size: 20px;
     padding-left: 10px;
-    color: #fff;
-    
+    color: var(--text-main);
+}
+#searchBox::placeholder {
+    color: var(--button-background);
 }
 .script {
     width: 100%;
@@ -286,7 +303,7 @@ b {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-family: "GothamSSm-Black";
+    font-family: var(--font-black);
 }
 .script > h3 {
     font-size: 15px;
@@ -306,7 +323,7 @@ b {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     background-image: linear-gradient(to right, var(--accent-bright),var(--accent-dark));
-    color: #fff;
+    color: var(--text-onaccent);
     box-shadow: 0px 0px 50px var(--accent-verydark);
     cursor: default;
 }
@@ -318,7 +335,7 @@ b {
     width: 65vw;
     height: calc(100vh - 56px);
     padding: 8px;
-    background: #181818;
+    background: var(--background-main);
     color: var(--text-onaccent);
     bottom:0;
 }
@@ -328,7 +345,7 @@ b {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-family: "GothamSSm-Black";
+    font-family: var(--font-black);
 }
 #scriptsDetails > h3 {
     font-size: 17px;
@@ -348,8 +365,8 @@ b {
     border-radius:17.5px;
     width: calc(60vw - 45px);
     right:67px;
-    color: #fff;
-    font-family: "GothamSSm-Black";
+    color:var(--text-onaccent);
+    font-family: var(--font-black);
     font-size: 20px;
     transition: 0.5s background-size, 0.3s box-shadow;
 }
@@ -401,16 +418,16 @@ body.loggingIn > #appContainer {
     display: block;
 }
 #loginBox > .textbox {
-    background: #333333;
-    color: #fff;
+    background: var(--button-background);
+    color: var(--button-text);
     height: 35px;
     width: 330px;
     font-size: 20px;
-    box-shadow: 0px 0px 10px #333;
+    box-shadow: 0px 0px 10px var(--button-background);
     border: none;
     margin-left: 27px;
     margin-bottom: 20px;
-    font-family: "GothamSSm-Bold";
+    font-family: var(--font-bold);
     padding-left: 7px;
 }
 #loginBox > button {

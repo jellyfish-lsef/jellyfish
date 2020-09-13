@@ -88,6 +88,22 @@ async function createWindow () {
     ipcMain.on('run-script', async (event, arg) => {
         exploit.runScript(arg)
     })
+    ipcMain.on("save-script", (evt,script) => {    
+        console.log("save-script")
+        var loc = dialog.showSaveDialogSync(win, {
+            title: "Save Current Script",
+            defaultPath: path.join(homedir,"Documents","Jellyfish","Scripts"),
+            buttonLabel: "Save",
+            message:"Choose where you want to save the current script in the editor.",
+            filters: [{extensions: ["lua","txt"]}]
+        })
+        if (!loc) return;
+        if (!loc.endsWith(".lua") && !loc.endsWith(".txt")) {
+            loc += ".lua"
+        }
+        fs.writeFileSync(loc,script)
+    })
+
     if (!fs.existsSync(JELLYFISH_DATA_DIR)) {
         fs.mkdirSync(JELLYFISH_DATA_DIR)
     }
@@ -131,6 +147,8 @@ async function createWindow () {
             console.error(exploit,"isn't a valid exploit.")
         }
     })
+
+    
     // and load the index.html of the app.
     win.loadFile('www/index.html')
     win.webContents.on('new-window', function(event, url){

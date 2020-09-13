@@ -90,10 +90,6 @@
                         <h2>Injection Options</h2>
                         <input id="alternativeElevation" onchange="localStorage.setItem('usesAlternativeElevation',this.checked)" type="checkbox" style="margin-left: 8px;">
                         <label for="alternativeElevation">Use alternative elevation method</label><br><br>
-                        <div id="reinstallCalamari" style="display: none;">
-                            If you're having injection troubles, or the regular Calamari app has broken, you might want to reinstall Calamari.<br>
-                            <button class="simpleButton" style="position: initial;width: auto;padding-left: 16px;padding-right: 16px;" onclick='reinstallCalamari()'>Reinstall Calamari</button>
-                        </div>
                     </div>
                     <script>
                         document.querySelector("#calamariOptions").style.display = require("os").platform() != "darwin" ? "none" : "block"

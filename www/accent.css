@@ -1,8 +1,48 @@
+/* This contains most of the things you might want to change */
 body, body *, body > * {
-    --text-main:#222;
-    --background-main: #fff;
+    /* This changes the color of the text on the background */
+    --text-main:#fff;
+    /* This changes the color of the text on the accent */
     --text-onaccent: #fff;
-    --accent-bright: #E51E10;
-    --accent-dark: #A20F05;
-    --accent-verydark: #9C0A0E;
+
+    /* This changes the background color of Jellyfish. */
+    --background-main: #222;
+    
+    /* This changes the color of the grey buttons on the tools page */
+    --button-background: #444;
+    --button-text: #fff;
+
+    /* This number (0-360) defines the hue of the user interface. */
+    --accent-hue: 356;
+
+    /* These colors allow for more indepth changing of the primary color */
+    --accent-bright: hsl(var(--accent-hue),87%,48%);
+    --accent-dark: hsl(var(--accent-hue),94%,48%);
+    --accent-verydark: hsl(var(--accent-hue),88%,33%);
+
+    /* Change the font */
+    --font-black: "GothamSSm-Black", "Montserrat", sans-serif;
+    --font-bold: "GothamSSm-Bold", "Montserrat", sans-serif;
+    --font-medium: "GothamSSm-Medium", "Montserrat", sans-serif;
+    --font-light: "GothamSSm-Book", "Montserrat", sans-serif;
 }
+
+
+/* These are settings for checkboxes, Don't ask what they mean. idfk /shrug */
+input[type='checkbox'] {
+    --active: var(--accent-bright);
+    --active-inner: #fff;
+    --focus: 2px var(--accent-verydark);
+    --border: #BBC1E1;
+    --border-hover: var(--accent-bright);
+    --background: #fff;
+    --disabled: #F6F8FF;
+    --disabled-inner: #E1E6F9;
+}
+/* uncomment for brandless */
+/**.topBarBrand {
+    display:none;
+}
+#topBarNavi {
+    text-align: left;
+}**/

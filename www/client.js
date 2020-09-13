@@ -31,49 +31,6 @@ if (location.hash.length > 1) { window.onhashchange()}
 var isLoading = true
 
 
-function reinstallCalamari() {
-    var win = require('electron').remote.getCurrentWindow()
-    if (location.toString().includes("CalamariApps")) {
-        return dialog.showMessageBoxSync(win,{
-            type: "error",
-            buttons: ["Ok"],
-            defaultId: 0,
-            message: "Jellyfish is inside the CalamariApps folder.",
-            detail: "You are running Jellyfish from within the CalamariApps folder. Please quit Jellyfish, then move it somewhere else (such as your actual Applications folder), then try again.",
-        })
-    }
-    var reinstallOption = dialog.showMessageBoxSync(win,{
-        type: "question",
-        buttons: ["Full Reinstall","App Reinstall","Cancel"],
-        defaultId: 2,
-        message: "Reinstall Calamari?",
-        detail: "Reinstalling will delete everything in the CalamariApps folder, and completing a full reinstall will also log you out of Calamari.",
-    })
-    if (reinstallOption == 2) return;
-    try {
-        fs.rmdirSync(path.join(homedir,"Documents","CalamariApps"),{ recursive: true })
-        if (reinstallOption == 0) {
-            fs.rmdirSync("/Users/Shared/Calamari",{ recursive: true })
-        }
-        var reinstallOption = dialog.showMessageBoxSync(win,{
-            buttons: ["Quit"],
-            defaultId: 0,
-            message: "Uninstall complete",
-            detail: "Please restart Jellyfish to complete the reinstall.",
-        })
-        window.close()
-    } catch(e) {
-        var reinstallOption = dialog.showMessageBoxSync(win,{
-            type: "error",
-            buttons: ["Ok"],
-            defaultId: 0,
-            message: "Reinstall failed",
-            detail: e.toString(),
-        })
-    }
-}
-
-
 var lastPingInterval = 0
 ipcRenderer.on('http-request',(e,data) => {
     if (data.messageType == "ping") {
@@ -100,6 +57,5 @@ const exploits = {
 ipcRenderer.on('set-exploit',(e,data) => {
     exploit = data
     document.title = "Jellyfish for " + exploits[data]
-    document.querySelector("#reinstallCalamari").style.display = data == "calamari" ? "block" : "none"
 })
 document.querySelector("#alternativeElevation").checked = localStorage.getItem("usesAlternativeElevation") == "true"

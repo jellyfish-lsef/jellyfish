@@ -1,13 +1,13 @@
 
 
-function showLogin() {
+function showLogin(a) {
     try {
-        document.querySelector("#loginUsername").value = atob(fs.readFileSync("/Users/Shared/Calamari/GY"))
+        document.querySelector("#loginUsername").value = a[0]
     } catch(e) {
         console.error(e)
     }
     try {
-        document.querySelector("#loginPassword").value = atob(fs.readFileSync("/Users/Shared/Calamari/NGV"))
+        document.querySelector("#loginPassword").value = a[1]
     } catch(e) {
         console.error(e)
     }
@@ -19,9 +19,7 @@ function login() {
     if (document.querySelector("#loginUsername").value == "trial") {
         return alert("Trial login is no longer available.")
     }
-    fs.writeFileSync("/Users/Shared/Calamari/GY",btoa(document.querySelector("#loginUsername").value))
-    fs.writeFileSync("/Users/Shared/Calamari/NGV",btoa(document.querySelector("#loginPassword").value))
-    ipcRenderer.send("check-creds")
+    ipcRenderer.send("check-creds",[document.querySelector("#loginUsername").value,document.querySelector("#loginPassword").value])
 }
 
 ipcRenderer.on('request-login', showLogin)
