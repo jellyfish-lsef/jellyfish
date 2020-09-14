@@ -69,9 +69,10 @@ async function createWindow () {
         height: 585,
         show:false,
         webPreferences: {
-            nodeIntegration: true,
-            enableRemoteModule: true
-        }
+            nodeIntegration: false,
+            enableRemoteModule: false,
+            preload: path.resolve("./preload.js")
+        },
     })
     win.removeMenu()
     global.win = win
@@ -163,6 +164,7 @@ async function createWindow () {
             child_process.spawnSync("cmd",["/s","/c","start",url,"/b"])
         }
     }
+    
 
     win.once('ready-to-show', () => {
         
