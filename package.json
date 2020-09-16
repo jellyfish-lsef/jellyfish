@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "name": "jellyfish",
-  "description": "",
+  "description": "For more information, please visit the [website](https://jellyfish.thelmgn.com)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/jellyfish-lsef/jellyfish.git"
   },
   "author": "theLMGN",
-  "license": "GPL-3.0",
+  "license": "SEE LICENCE IN LICENCE",
   "bugs": {
     "url": "https://github.com/jellyfish-lsef/jellyfish/issues"
   },
@@ -26,5 +26,9 @@
     "sudo-prompt": "^9.2.1",
     "walker": "^1.0.7",
     "yauzl": "^2.10.0"
-  }
+  },
+  "devDependencies": {},
+  "keywords": [
+    "jellyfish-ui"
+  ]
 }

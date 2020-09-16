@@ -9,6 +9,7 @@ const exploits = {
     fluxus: "Fluxus"
 }
 process.once('loaded', () => {
+    if (location.toString().includes("preloader"))  return;
     global.jellyfish = {
         version: navigator.userAgent.split("jellyfish/")[1].split(" ")[0],
         exploit: "loading",
@@ -31,7 +32,6 @@ process.once('loaded', () => {
     global.jellyfish.setTopmost = function(v) { ipcRenderer.send('set-topmost',v) }
     global.jellyfish.inject = function(arg) { ipcRenderer.send("inject-button-click",arg) }
     global.jellyfish.attemptLogin = function(username,password) {ipcRenderer.send('check-creds',[username,password])}
-    
     var key = ""
     var cache = []
     global.jellyfish.getScript = function(filename,cb) {
