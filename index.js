@@ -3,21 +3,9 @@ const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const fs = require("fs")
 const path = require("path")
 const homedir = require('os').homedir();
-const windows = require("os").platform() == "win32";
 const child_process = require('child_process')
 const fetch = require("node-fetch")
-const http = require("http")
 const url = require('url');
-var httpListener = function(){}
-try {
-    /**
-    http.createServer(function(req,res) {
-        if (typeof httpListener == "function") {httpListener(req,res)}
-    }).listen(7964)
-    */
-} catch(e) {
-    console.error(e)
-}
 
 
 const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
