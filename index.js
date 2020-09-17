@@ -59,7 +59,7 @@ async function createWindow () {
         webPreferences: {
             nodeIntegration: false,
             enableRemoteModule: false,
-            preload: path.resolve("./preload.js")
+            preload: path.join(__dirname, 'preload.js')
         },
     })
     win.loadFile('preloader.html')
