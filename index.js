@@ -27,7 +27,7 @@ var supportedExploits = [
     "null",
 ]
 if (process.platform == "win32") {
-    supportedExploits.push("synx","sirhurt")
+    supportedExploits.push("synx","sirhurt","wrd")
 }
 if (process.platform == "darwin") {
     supportedExploits.push("calamari")
