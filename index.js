@@ -201,7 +201,7 @@ async function createWindow () {
         win.setFullScreenable(!arg);
     })
     ipcMain.on('run-script', async (event, arg) => {
-        exploit.runScript(arg)
+        setTimeout(function() { exploit.runScript(arg) })
     })
     ipcMain.on("save-script", (evt,script) => {    
         console.log("save-script")
