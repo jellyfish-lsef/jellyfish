@@ -37,6 +37,67 @@ function getPreferedExploit() {
     }
 }
 
+async function getPreferedTheme(override) {
+    var preferedTheme = override || "jellyfish-lsef/jellyfish-ui"
+    try {
+        if (!override && fs.existsSync(path.join(udr,"preferedUi.txt"))) {
+            preferedTheme = fs.readFileSync(path.join(udr,"preferedUi.txt")).toString()
+            console.log("Prefered theme file is",preferedTheme)
+        }
+        if (preferedTheme.startsWith("local/")) {
+            if (fs.existsSync(path.join(preferedTheme.replace("local/",""),"package.json"))) {
+                console.log("Using local theme",preferedTheme)
+                return preferedTheme;
+            } else {
+                dialog.showMessageBoxSync(win,{
+                    message: preferedTheme + " isn't a valid theme",
+                    detail: "There is no file called package.json in the theme.",
+                })
+                return "jellyfish-lsef/jellyfish-ui"
+            }
+        } else {
+            console.log("Checking",preferedTheme)
+            var f = await fetch("https://raw.githubusercontent.com/" + preferedTheme + "/master/package.json")
+            if (f.ok) {
+                console.log("package.json exists on",preferedTheme)
+                var j = await f.json()
+                if (j.keywords && j.keywords.includes && j.keywords.includes("jellyfish-ui")) {
+                    console.log(preferedTheme,"has a valid package.json")
+                    return preferedTheme;
+                } else {
+                    console.log(preferedTheme,"doesn't have a valid package.json")
+                    dialog.showMessageBoxSync(win,{
+                        message: preferedTheme + " isn't a valid theme",
+                        detail: "The package.json didn't include an array called keywords, or it didn't include 'jellyfish-ui'",
+                    })
+                    return "jellyfish-lsef/jellyfish-ui"
+                }
+            } else {
+                dialog.showMessageBoxSync(win,{
+                    message: preferedTheme + " isn't a valid theme",
+                    detail: "The request to get the package.json file failed with error code " + f.status + ". Make sure that the repo exists, and that there is a package.json in the root of master.",
+                })
+                return "jellyfish-lsef/jellyfish-ui"
+            }
+        }
+
+    } catch(e) {
+        console.error(e)
+        dialog.showMessageBoxSync(win,{
+            message: "Couldn't validate theme " + preferedTheme,
+            detail: e.toString(),
+        })
+        return "jellyfish-lsef/jellyfish-ui"
+    }
+}
+
+function restart() {
+    var argv = process.argv
+    child_process.spawn(argv.shift(),argv,{detached: true}).unref();
+    app.quit()
+    
+}
+
 async function createWindow () {
     global.exploitName = (getPreferedExploit())
     global.exploit = require("./exploits/" + exploitName)
@@ -50,16 +111,15 @@ async function createWindow () {
     }
     
     // Create the browser window.
-    const win = new BrowserWindow({
-        width: 768,
-        height: 585,
+    var win = new BrowserWindow({
+        width: 368,
+        height: 0,
         show:true,
         webPreferences: {
             nodeIntegration: false,
-            enableRemoteModule: false,
-            preload: path.join(__dirname, 'preload.js')
         },
     })
+    global.win = win
     win.loadFile('preloader.html')
     win.removeMenu()
     ipcMain.on("gimmie-devtools",() => { win.webContents.openDevTools() })
@@ -111,35 +171,7 @@ async function createWindow () {
         console.error(e)
     }
     win.setTitle("Jellyfish | Updating theme")
-    var preferedTheme = "jellyfish-lsef/jellyfish-ui"
-    var pTheme = ""
-    try {
-        if (fs.existsSync(path.join(udr,"preferedUi.txt"))) {
-            preferedTheme = fs.readFileSync(path.join(udr,"preferedUi.txt")).toString()
-            console.log("Prefered theme file is",pTheme)
-        }
-        if (preferedTheme.startsWith("local/") && fs.existsSync(path.join(preferedTheme.replace("local/",""),"package.json"))) {
-            console.log("Using local theme",preferedTheme)
-            pTheme = preferedTheme;
-        } else {
-            console.log("Checking",preferedTheme)
-            var f = await fetch("https://raw.githubusercontent.com/" + preferedTheme + "/master/package.json")
-            if (f.ok) {
-                console.log("package.json exists on",preferedTheme)
-                var j = f.json()
-                if (j.keywords && j.keywords.includes && j.keywords.includes("jellyfish-ui")) {
-                    console.log(preferedTheme,"has a valid package.json")
-                    pTheme = preferedTheme;
-                } else {
-                    console.log(preferedTheme,"doesn't have a valid package.json")
-                }
-            }
-        }
-
-    } catch(e) {
-        console.error(e)
-        preferedTheme = "jellyfish-lsef"
-    }
+    var preferedTheme = await getPreferedTheme()
     console.log("Updating theme",preferedTheme)
     win.setTitle("Jellyfish | Updating " + preferedTheme)
     var tp = path.join(udr,"themeCache")
@@ -188,98 +220,128 @@ async function createWindow () {
         var themePkg = require(path.join(tp,"package.json"))
         var h = path.join(tp,themePkg.main)
         win.setTitle("Jellyfish | Loading UI")
-        win.loadFile(path.resolve(h))
+        var nwin = new BrowserWindow({
+            width: themePkg.width || 768,
+            height: themePkg.height || 585,
+            resizable: !themePkg.fixedSize,
+            show:true,
+            frame: !themePkg.borderless,
+            webPreferences: {
+                nodeIntegration: false,
+                enableRemoteModule: false,
+                preload: path.join(__dirname, 'preload.js')
+            },
+        })
+        nwin.removeMenu()
+        nwin.loadFile(path.resolve(h))
+        win.destroy()
+        win = nwin
+        global.win = nwin
+        ipcMain.on("gimmie-devtools",() => { win.webContents.openDevTools() })
+        ipcMain.on('inject-button-click',exploit.inject)
+        ipcMain.on('check-creds',exploit.checkCreds)
+        
+        var tmin = 0
+        ipcMain.on('set-topmost', (event,arg) => {
+            win.setAlwaysOnTop(arg, "floating");
+            win.setVisibleOnAllWorkspaces(arg);
+            win.setFullScreenable(!arg);
+        })
+        ipcMain.on('run-script', async (event, arg) => {
+            setTimeout(function() { exploit.runScript(arg) })
+        })
+        ipcMain.on("save-script", (evt,script) => {    
+            console.log("save-script")
+            var loc = dialog.showSaveDialogSync(win, {
+                title: "Save Current Script",
+                defaultPath: path.join(homedir,"Documents","Jellyfish","Scripts"),
+                buttonLabel: "Save",
+                message:"Choose where you want to save the current script in the editor.",
+                filters: [{extensions: ["lua","txt"]}]
+            })
+            if (!loc) return;
+            if (!loc.endsWith(".lua") && !loc.endsWith(".txt")) {
+                loc += ".lua"
+            }
+            fs.writeFileSync(loc,script)
+        })
+        exploit.init()
+        var key = ""
+        
+        function traverse(ckey,evt) {
+            var scriptsDir = path.join(JELLYFISH_DATA_DIR,"Scripts")
+            var walker = require("walker")(scriptsDir)
+            walker.filterDir(() => {return key == ckey})
+            walker.on("file", function(file,stat) {
+                evt.reply('script-found',[key,scriptsDir,file])
+            })
+        }
+        ipcMain.on("startCrawl",(evt,ckey) => {
+            key = ckey
+            traverse(key,evt)
+        })
+        ipcMain.on("switch-exploit", (evt,exploit) => {
+            if (supportedExploits.includes(exploit)) {
+                fs.writeFileSync(path.join(udr,"preferedExploit.txt"),exploit)
+                dialog.showMessageBoxSync(win,{
+                    buttons: ["Restart"],
+                    defaultId: 1,
+                    message: "Restart required.",
+                    detail: `Jellyfish requires a restart to switch exploit.`,
+                })
+                restart()
+            } else {
+                console.error(exploit,"isn't a valid exploit.")
+            }
+        })
+        ipcMain.on("switch-theme",async (evt,theme)=> {
+            var valid = theme == "jellyfish-lsef/jellyfish-ui" || (await getPreferedTheme(theme) != "jellyfish-lsef/jellyfish-ui" && dialog.showMessageBoxSync(win,{
+                buttons: ["Cancel","Change Theme"],
+                defaultId: 1,
+                message: "Change theme to " + theme + "?",
+                detail: `If you confirm this change, Jellyfish will restart to download and apply the changes.`,
+            }))
+            if (!valid) return;
+            fs.writeFileSync(path.join(udr,"preferedUi.txt"),theme)
+            restart()
+        })
+
+        function openUrl(url) {
+            if (process.platform == "darwin") {
+                child_process.spawnSync("open",[url])
+            } else {
+                child_process.spawnSync("cmd",["/s","/c","start",url,"/b"])
+            }
+        }
+        
+
+        ipcMain.on("ready", () => {
+            
+            setTimeout(async function() {
+                win.show()
+                win.webContents.setZoomFactor(1);
+                win.webContents.setVisualZoomLevelLimits(1, 1);
+                httpListener = function(req,res) {
+                    var queryObject = url.parse(req.url,true).query;
+                    console.log(queryObject)
+                    win.webContents.send("http-request",queryObject)
+                }
+                
+                win.webContents.send("supported-exploits",supportedExploits)
+                win.webContents.send("set-exploit",global.exploitName)
+                //win.webContents.setLayoutZoomLevelLimits(0, 0);
+            },300)
+        })
+
+        
+        win.webContents.on('new-window', function(event, url){
+            event.preventDefault();
+            openUrl(url)
+        });
+        
+    
     })
      
-    ipcMain.on('inject-button-click',exploit.inject)
-    ipcMain.on('check-creds',exploit.checkCreds)
-    
-    var tmin = 0
-    ipcMain.on('set-topmost', (event,arg) => {
-        win.setAlwaysOnTop(arg, "floating");
-        win.setVisibleOnAllWorkspaces(arg);
-        win.setFullScreenable(!arg);
-    })
-    ipcMain.on('run-script', async (event, arg) => {
-        setTimeout(function() { exploit.runScript(arg) })
-    })
-    ipcMain.on("save-script", (evt,script) => {    
-        console.log("save-script")
-        var loc = dialog.showSaveDialogSync(win, {
-            title: "Save Current Script",
-            defaultPath: path.join(homedir,"Documents","Jellyfish","Scripts"),
-            buttonLabel: "Save",
-            message:"Choose where you want to save the current script in the editor.",
-            filters: [{extensions: ["lua","txt"]}]
-        })
-        if (!loc) return;
-        if (!loc.endsWith(".lua") && !loc.endsWith(".txt")) {
-            loc += ".lua"
-        }
-        fs.writeFileSync(loc,script)
-    })
-    exploit.init()
-    var key = ""
-    
-    function traverse(ckey,evt) {
-        var scriptsDir = path.join(JELLYFISH_DATA_DIR,"Scripts")
-        var walker = require("walker")(scriptsDir)
-        walker.filterDir(() => {return key == ckey})
-        walker.on("file", function(file,stat) {
-            evt.reply('script-found',[key,scriptsDir,file])
-        })
-    }
-    ipcMain.on("startCrawl",(evt,ckey) => {
-        key = ckey
-        traverse(key,evt)
-    })
-    ipcMain.on("switch-exploit", (evt,exploit) => {
-        if (supportedExploits.includes(exploit)) {
-             fs.writeFileSync(path.join(udr,"preferedExploit.txt"),exploit)
-             dialog.showMessageBoxSync(win,{
-                buttons: ["Restart"],
-                defaultId: 1,
-                message: "Restart required.",
-                detail: `Jellyfish requires a restart to switch exploit.`,
-            })
-            app.quit()
-        } else {
-            console.error(exploit,"isn't a valid exploit.")
-        }
-    })
-
-    function openUrl(url) {
-        if (process.platform == "darwin") {
-            child_process.spawnSync("open",[url])
-        } else {
-            child_process.spawnSync("cmd",["/s","/c","start",url,"/b"])
-        }
-    }
-    
-
-    ipcMain.on("ready", () => {
-        
-        setTimeout(async function() {
-            win.show()
-            win.webContents.setZoomFactor(1);
-            win.webContents.setVisualZoomLevelLimits(1, 1);
-            httpListener = function(req,res) {
-                var queryObject = url.parse(req.url,true).query;
-                console.log(queryObject)
-                win.webContents.send("http-request",queryObject)
-            }
-            
-            win.webContents.send("supported-exploits",supportedExploits)
-            win.webContents.send("set-exploit",global.exploitName)
-            //win.webContents.setLayoutZoomLevelLimits(0, 0);
-        },300)
-    })
-
-    
-    win.webContents.on('new-window', function(event, url){
-        event.preventDefault();
-        openUrl(url)
-    });
     
     
 }

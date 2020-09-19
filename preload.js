@@ -7,7 +7,8 @@ const exploits = {
     sirhurt: "SirHurt",
     synx: "Synapse X",
     fluxus: "Fluxus",
-    wrd: "WRD"
+    wrd: "WRD",
+    easyexploits: "EasyExploits"
 }
 process.once('loaded', () => {
     if (location.toString().includes("preloader"))  return;
@@ -30,8 +31,10 @@ process.once('loaded', () => {
     global.jellyfish.runScript = function(a) {ipcRenderer.send("run-script",a)}
     global.jellyfish.saveScript = function(a) {ipcRenderer.send("save-script",a)}
     global.jellyfish.setExploit = function(e) { ipcRenderer.send("switch-exploit",e) }
+    global.jellyfish.setTheme = function(t) { ipcRenderer.send("switch-theme",t) }
     global.jellyfish.setTopmost = function(v) { ipcRenderer.send('set-topmost',v) }
     global.jellyfish.inject = function(arg) { ipcRenderer.send("inject-button-click",arg) }
+    global.jellyfish.init = function() { ipcRenderer.send("ready") }
     global.jellyfish.attemptLogin = function(username,password) {ipcRenderer.send('check-creds',[username,password])}
     var key = ""
     var cache = []
@@ -92,7 +95,7 @@ process.once('loaded', () => {
 
     jellyfish.break = function(){debugger};
 
-    ipcRenderer.send("ready",key)
+    //ipcRenderer.send("ready",key)
 
     const API_ENDPOINT = /*location.toString().startsWith("file:///Users/thelmgn/Documents/GitHub/jellyfish/www/index.html") ? "http://127.0.0.1:7961" : */"https://jellyfish-api.thelmgn.com"
     const DISCORD_CLIENTID = '733148416309330065';
@@ -133,9 +136,7 @@ process.once('loaded', () => {
     })
 
     global.jellyfish.startRemoteCrawl = function() {
-        isLoading = false
         key = Math.random().toString()
-        scriptsContainer.innerHTML = ""
         socket.emit("sendScripts",key)
     }
 
