@@ -11,14 +11,12 @@ const url = require('url');
 const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
 global.JELLYFISH_DATA_DIR = JELLYFISH_DATA_DIR
 
-var supportedExploits = [
-    "null",
-]
+var supportedExploits = ["fluxus"]
 if (process.platform == "win32") {
-    supportedExploits.push("synx","sirhurt","wrd")
+    supportedExploits.push("synx","sirhurt","wrd","easyexploits")
 }
 if (process.platform == "darwin") {
-    supportedExploits.push("calamari","fluxus")
+    supportedExploits.push("calamari")
 }
 var udr = app.getPath('userData')
 if (!fs.existsSync(udr)) {fs.mkdirSync(udr)}
@@ -64,6 +62,8 @@ async function createWindow () {
     })
     win.loadFile('preloader.html')
     win.removeMenu()
+    ipcMain.on("gimmie-devtools",() => { win.webContents.openDevTools() })
+
     global.win = win
     win.setTitle("Jellyfish | Creating required files")
     if (!fs.existsSync(JELLYFISH_DATA_DIR)) {
@@ -103,7 +103,7 @@ async function createWindow () {
                 detail: `The latest version of Jellyfish is ${nv.r.tag_name}, you're running ${cv}, would you like to update now?\n\nChangelog:\n${nv.r.body}`,
             })
             if (update) {
-                openUrl(nv.asset.browser_download_url)
+                openUrl("https://jellyfish.thelmgn.com")
             }
             process.exit()
         }
@@ -115,10 +115,10 @@ async function createWindow () {
     var pTheme = ""
     try {
         if (fs.existsSync(path.join(udr,"preferedUi.txt"))) {
-            pTheme = fs.readFileSync(path.join(udr,"preferedUi.txt"))   
+            preferedTheme = fs.readFileSync(path.join(udr,"preferedUi.txt")).toString()
             console.log("Prefered theme file is",pTheme)
         }
-        if (preferedTheme.startsWith("local/") && fs.existsSync(path.join(preferedTheme.replace("local/",""),"index.html"))) {
+        if (preferedTheme.startsWith("local/") && fs.existsSync(path.join(preferedTheme.replace("local/",""),"package.json"))) {
             console.log("Using local theme",preferedTheme)
             pTheme = preferedTheme;
         } else {
@@ -257,7 +257,7 @@ async function createWindow () {
     }
     
 
-    win.once('ready-to-show', () => {
+    ipcMain.on("ready", () => {
         
         setTimeout(async function() {
             win.show()
@@ -269,6 +269,7 @@ async function createWindow () {
                 win.webContents.send("http-request",queryObject)
             }
             
+            win.webContents.send("supported-exploits",supportedExploits)
             win.webContents.send("set-exploit",global.exploitName)
             //win.webContents.setLayoutZoomLevelLimits(0, 0);
         },300)

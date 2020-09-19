@@ -6,25 +6,26 @@ const exploits = {
     calamari: "Calamari-M",
     sirhurt: "SirHurt",
     synx: "Synapse X",
-    fluxus: "Fluxus"
+    fluxus: "Fluxus",
+    wrd: "WRD"
 }
 process.once('loaded', () => {
     if (location.toString().includes("preloader"))  return;
     global.jellyfish = {
         version: navigator.userAgent.split("jellyfish/")[1].split(" ")[0],
         exploit: "loading",
-        exploitName: "Loading"
+        exploitName: "Loading",
+        supportedExploits: [],
+        exploits
     }
-    
-    global.jellyfish.exploits = exploits
     document.addEventListener('dragover', event => event.preventDefault());document.addEventListener('drop', event => event.preventDefault());
     global.jellyfish.platform = navigator.platform.includes("Mac") ? "darwin" : navigator.platform.toLocaleLowerCase()
-    window.onkeydown = function(evt) {
+    window.addEventListener("keydown",function(evt) {
         // disable zooming
         if ((evt.code == "Minus" || evt.code == "Equal") && (evt.ctrlKey || evt.metaKey)) {evt.preventDefault()}
-        if (evt.code == "F12") require('electron').remote.getCurrentWindow().openDevTools();
+        if (evt.code == "F12") ipcRenderer.send("gimmie-devtools");
         webFrame.setZoomFactor(1)
-    }
+    })
 
     global.jellyfish.runScript = function(a) {ipcRenderer.send("run-script",a)}
     global.jellyfish.saveScript = function(a) {ipcRenderer.send("save-script",a)}
@@ -41,7 +42,15 @@ process.once('loaded', () => {
                 ftch.text().then(function(t) {cache[filename] = t;cb(null,t)}).catch((e) => {cb(e)})
             }).catch((e) => {cb(e)})
         } else { // it's on the local fs (i hope)
-            fs.readFile(filename,cb)
+            const relative = path.relative(path.resolve(path.join(require("os").homedir(),"Documents","Jellyfish")),filename);
+            if(!(relative && !relative.startsWith('..') && !path.isAbsolute(relative))) {
+                return console.error("nice try")
+            }
+            try {
+                cb(null,fs.readFileSync(filename).toString())
+            } catch(e) {
+                cb(e)
+            }
         }
     }
 
@@ -63,6 +72,10 @@ process.once('loaded', () => {
         global.jellyfish.exploitName = exploits[data] || data
         gotExploit()
     })
+    ipcRenderer.on('supported-exploits',(e,data) => {
+        global.jellyfish.supportedExploits = data
+        gotSupportedExploits(data)
+    })
 
     ipcRenderer.on('script-found', (event, arg) => {
         if (arg[0] == key)  {
@@ -72,12 +85,14 @@ process.once('loaded', () => {
                 createScript(p,arg[2])
             }
         } else {
-            ipcRenderer.cancel("cancelKey",key)
+            ipcRenderer.send("cancelKey",key)
         }
     })
+    
 
+    jellyfish.break = function(){debugger};
 
-
+    ipcRenderer.send("ready",key)
 
     const API_ENDPOINT = /*location.toString().startsWith("file:///Users/thelmgn/Documents/GitHub/jellyfish/www/index.html") ? "http://127.0.0.1:7961" : */"https://jellyfish-api.thelmgn.com"
     const DISCORD_CLIENTID = '733148416309330065';

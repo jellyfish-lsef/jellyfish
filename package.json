@@ -19,12 +19,14 @@
   "dependencies": {
     "discord-rpc": "^3.1.2",
     "electron": "^9.0.5",
+    "electron-dllinjector": "^1.0.1",
     "extract-zip": "git+https://github.com/theLMGN/extract-zip.git",
     "node-fetch": "^2.6.0",
     "ps-node": "^0.1.6",
     "socket.io-client": "^2.3.0",
     "sudo-prompt": "^9.2.1",
     "walker": "^1.0.7",
+    "windows-process-manager": "^1.0.0",
     "yauzl": "^2.10.0"
   },
   "devDependencies": {},
