@@ -10,6 +10,7 @@ const exploits = {
     wrd: "WRD",
     easyexploits: "EasyExploits"
 }
+const datadir = path.join(require("os").homedir(),"Documents","Jellyfish")
 process.once('loaded', () => {
     if (location.toString().includes("preloader"))  return;
     global.jellyfish = {
@@ -17,7 +18,8 @@ process.once('loaded', () => {
         exploit: "loading",
         exploitName: "Loading",
         supportedExploits: [],
-        exploits
+        exploits,
+        datadir
     }
     document.addEventListener('dragover', event => event.preventDefault());document.addEventListener('drop', event => event.preventDefault());
     global.jellyfish.platform = navigator.platform.includes("Mac") ? "darwin" : navigator.platform.toLocaleLowerCase()
@@ -36,6 +38,7 @@ process.once('loaded', () => {
     global.jellyfish.inject = function(arg) { ipcRenderer.send("inject-button-click",arg) }
     global.jellyfish.init = function() { ipcRenderer.send("ready") }
     global.jellyfish.attemptLogin = function(username,password) {ipcRenderer.send('check-creds',[username,password])}
+    global.jellyfish.joinPath = function() {return path.join(...arguments)}
     var key = ""
     var cache = []
     global.jellyfish.getScript = function(filename,cb) {
@@ -45,9 +48,10 @@ process.once('loaded', () => {
                 ftch.text().then(function(t) {cache[filename] = t;cb(null,t)}).catch((e) => {cb(e)})
             }).catch((e) => {cb(e)})
         } else { // it's on the local fs (i hope)
-            const relative = path.relative(path.resolve(path.join(require("os").homedir(),"Documents","Jellyfish")),filename);
+        const relative = path.relative(path.resolve(datadir),filename);
             if(!(relative && !relative.startsWith('..') && !path.isAbsolute(relative))) {
-                return console.error("nice try")
+                console.error("nice try")
+                cb("Chosen file was not in allowed scripts folder")
             }
             try {
                 cb(null,fs.readFileSync(filename).toString())
@@ -91,7 +95,11 @@ process.once('loaded', () => {
             ipcRenderer.send("cancelKey",key)
         }
     })
-    
+    ipcRenderer.on('script-finish', (event, arg) => {
+        if (arg[0] == key) {
+            crawlFinished()
+        }
+    })
 
     jellyfish.break = function(){debugger};
 

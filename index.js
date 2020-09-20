@@ -93,7 +93,11 @@ async function getPreferedTheme(override) {
 
 function restart() {
     var argv = process.argv
-    child_process.spawn(argv.shift(),argv,{detached: true}).unref();
+    /*child_process.spawn(argv.shift(),argv,{
+        ...process,
+        cwd: process.cwd(),
+        detached: true,
+    }).unref();*/
     app.quit()
     
 }
@@ -113,12 +117,16 @@ async function createWindow () {
     // Create the browser window.
     var win = new BrowserWindow({
         width: 368,
-        height: 0,
+        height: 1,
         show:true,
         webPreferences: {
             nodeIntegration: false,
         },
+        alwaysOnTop: true,
+        fullscreenable: false,
+        resizable: false
     })
+    win.setVisibleOnAllWorkspaces(true);
     global.win = win
     win.loadFile('preloader.html')
     win.removeMenu()
@@ -274,6 +282,9 @@ async function createWindow () {
             walker.filterDir(() => {return key == ckey})
             walker.on("file", function(file,stat) {
                 evt.reply('script-found',[key,scriptsDir,file])
+            })
+            walker.on("end", function() {
+                evt.reply("script-finish",[key,scriptsDir])
             })
         }
         ipcMain.on("startCrawl",(evt,ckey) => {
