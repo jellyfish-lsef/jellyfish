@@ -19,7 +19,7 @@ process.once('loaded', () => {
         exploitName: "Loading",
         supportedExploits: [],
         exploits,
-        datadir
+        datadir: datadir.replace("/","/")
     }
     document.addEventListener('dragover', event => event.preventDefault());document.addEventListener('drop', event => event.preventDefault());
     global.jellyfish.platform = navigator.platform.includes("Mac") ? "darwin" : navigator.platform.toLocaleLowerCase()
