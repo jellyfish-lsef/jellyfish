@@ -69,7 +69,7 @@ process.once('loaded', () => {
 
 
 
-    ipcRenderer.on('request-login', function(){showLogin()})
+    ipcRenderer.on('request-login', function(a){showLogin(...a)})
     ipcRenderer.on('login-success', function(){loginSuccess()})
     ipcRenderer.on('set-inject-btn-text', (event, arg) => {injectionStatusChange(arg)})
     ipcRenderer.on('enable-inject-btn', () => {enableInjectBtn()})
