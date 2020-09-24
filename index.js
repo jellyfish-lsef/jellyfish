@@ -37,6 +37,14 @@ function getPreferedExploit() {
     }
 }
 
+function openUrl(url) {
+    if (process.platform == "darwin") {
+        child_process.spawnSync("open",[url])
+    } else {
+        child_process.spawnSync("cmd",["/s","/c","start",url,"/b"])
+    }
+}
+
 async function getPreferedTheme(override) {
     var preferedTheme = override || "jellyfish-lsef/jellyfish-ui"
     try {
@@ -113,7 +121,17 @@ async function createWindow () {
     }) == 1) {
         return process.exit()
     }
-    
+    if (process.platform == "darwin" && parseInt(require("os").release().split(".")[0]) < 19) {
+        if (dialog.showMessageBoxSync({
+            buttons: ["No","Yes"],
+            defaultId: 1,
+            message: "Incompatible macOS version",
+            detail: "Jellyfish is only designed to run on macOS Mojave and later, due to macOS exploits not supporting High Sierra and earlier\n\nWould you like to learn more now?",
+        }) == 1) {
+            openUrl("macappstores://apps.apple.com/us/app/macos-mojave/id1398502828?ls=1&mt=12")
+        }
+        return process.exit()
+    }
     // Create the browser window.
     var win = new BrowserWindow({
         width: 368,
@@ -317,13 +335,7 @@ async function createWindow () {
             restart()
         })
 
-        function openUrl(url) {
-            if (process.platform == "darwin") {
-                child_process.spawnSync("open",[url])
-            } else {
-                child_process.spawnSync("cmd",["/s","/c","start",url,"/b"])
-            }
-        }
+        
         
 
         ipcMain.on("ready", () => {
