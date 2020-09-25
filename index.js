@@ -121,7 +121,7 @@ async function createWindow () {
     }) == 1) {
         return process.exit()
     }
-    if (process.platform == "darwin" && parseInt(require("os").release().split(".")[0]) < 19) {
+    if (process.platform == "darwin" && parseInt(require("os").release().split(".")[0]) < 18) {
         if (dialog.showMessageBoxSync({
             buttons: ["No","Yes"],
             defaultId: 1,
