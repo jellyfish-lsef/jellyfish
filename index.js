@@ -121,12 +121,12 @@ async function createWindow () {
     }) == 1) {
         return process.exit()
     }
-    if (process.platform == "darwin" && parseInt(require("os").release().split(".")[0]) < 18) {
+    if (process.platform == "darwin" && parseInt(require("os").release().split(".")[0]) < 17) {
         if (dialog.showMessageBoxSync({
             buttons: ["No","Yes"],
             defaultId: 1,
             message: "Incompatible macOS version",
-            detail: "Jellyfish is only designed to run on macOS Mojave and later, due to macOS exploits not supporting High Sierra and earlier\n\nWould you like to learn more now?",
+            detail: "Jellyfish is only designed to run on macOS High Sierra and later, due to macOS exploits not supporting High Sierra and earlier\n\nWould you like to learn more now?",
         }) == 1) {
             openUrl("macappstores://apps.apple.com/us/app/macos-mojave/id1398502828?ls=1&mt=12")
         }
