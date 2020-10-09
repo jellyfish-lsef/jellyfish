@@ -8,7 +8,8 @@ const exploits = {
     synx: "Synapse X",
     fluxus: "Fluxus",
     wrd: "WRD",
-    easyexploits: "EasyExploits"
+    easyexploits: "EasyExploits",
+    krnl: "KRNL"
 }
 const datadir = path.join(require("os").homedir(),"Documents","Jellyfish")
 process.once('loaded', () => {

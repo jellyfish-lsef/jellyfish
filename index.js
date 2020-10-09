@@ -13,7 +13,7 @@ global.JELLYFISH_DATA_DIR = JELLYFISH_DATA_DIR
 
 var supportedExploits = ["fluxus"]
 if (process.platform == "win32") {
-    supportedExploits.push("synx","sirhurt","wrd","easyexploits")
+    supportedExploits.push("synx","sirhurt","wrd","easyexploits","krnl")
 }
 if (process.platform == "darwin") {
     supportedExploits.push("calamari")
