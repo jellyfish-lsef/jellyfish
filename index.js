@@ -121,6 +121,7 @@ async function createWindow () {
     }) == 1) {
         return process.exit()
     }
+/*
     if (process.platform == "darwin" && parseInt(require("os").release().split(".")[0]) < 17) {
         if (dialog.showMessageBoxSync({
             buttons: ["No","Yes"],
@@ -131,7 +132,7 @@ async function createWindow () {
             openUrl("macappstores://apps.apple.com/us/app/macos-mojave/id1398502828?ls=1&mt=12")
         }
         return process.exit()
-    }
+    }*/
     // Create the browser window.
     var win = new BrowserWindow({
         width: 368,
@@ -353,6 +354,33 @@ async function createWindow () {
                 win.webContents.send("supported-exploits",supportedExploits)
                 win.webContents.send("set-exploit",global.exploitName)
                 //win.webContents.setLayoutZoomLevelLimits(0, 0);
+
+
+
+
+                var modal = new BrowserWindow({
+                    width: 1200,//1200,
+                    height: 550, //550,
+                    parent: global.win,
+                    modal: true,
+                    transparent: false,
+                    title: "Support The Developers",
+                    webPreferences: {
+                        zoomFactor: 0.8,
+                        preload: path.join(__dirname, 'preload.js')
+                    }
+                })
+                // code for generating a valid, modern, firefox useragent
+                var d = new Date() - new Date("25 July 2014")
+                var days = Math.floor((d / 86400000))
+                var release = (days - 5) / 28
+                modal.loadURL("https://link-to.net/158988/jellyfish", {userAgent: `Mozilla/5.0 (${process.platform == "win32" ? "Windows NT 10.0; WOW64" : "Macintosh; Intel Mac OS X 10." + (parseInt(require("os").release().split(".")[0]) - 4)}; rv:${release}.0) Gecko/20100101 Firefox/${release}.0`})
+
+                modal.webContents.on("new-window",async (evt) => {
+                    evt.preventDefault();
+                    console.log("telling the pop up to fuck off")
+                    modal.destroy()
+                })
             },300)
         })
 
