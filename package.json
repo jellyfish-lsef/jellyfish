@@ -1,5 +1,5 @@
 {
-  "version": "2.1.2",
+  "version": "2.2.0",
   "name": "jellyfish",
   "description": "For more information, please visit the [website](https://jellyfish.thelmgn.com)",
   "main": "index.js",
@@ -18,20 +18,18 @@
   "homepage": "https://github.com/jellyfish-lsef/jellyfish#readme",
   "dependencies": {
     "discord-rpc": "^3.1.2",
-    "electron": "^9.3.1",
+    "electron": "^9.0.0",
+    "electron-prompt": "^1.6.0",
     "extract-zip": "git+https://github.com/theLMGN/extract-zip.git",
     "node-fetch": "^2.6.0",
     "ps-node": "^0.1.6",
+    "semver": "^7.3.2",
     "socket.io-client": "^2.3.0",
     "sudo-prompt": "^9.2.1",
     "walker": "^1.0.7",
-    "yauzl": "^2.10.0",
-    "windows-process-manager": "^1.0.0"
+    "yauzl": "^2.10.0"
   },
-  "optionalDependencies": {
-    "windows-process-manager": "^1.0.0"
-  },
+  "optionalDependencies": {},
   "devDependencies": {},
-  "keywords": [
-  ]
+  "keywords": []
 }

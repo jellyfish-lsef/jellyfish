@@ -15,9 +15,6 @@ var supportedExploits = ["fluxus"]
 if (process.platform == "win32") {
     supportedExploits.push("synx","sirhurt","wrd","easyexploits","krnl")
 }
-if (process.platform == "darwin") {
-    supportedExploits.push("calamari")
-}
 var udr = app.getPath('userData')
 if (!fs.existsSync(udr)) {fs.mkdirSync(udr)}
 function getPreferedExploit() {
@@ -30,7 +27,7 @@ function getPreferedExploit() {
                 return "null"
             }
         } else {
-            return "null"
+            return process.platform() == "darwin" ? "fluxus" : "null"
         }
     } catch(e) {
         return "null"
@@ -169,6 +166,31 @@ async function createWindow () {
         require("extract-zip")(b, { dir: path.join(JELLYFISH_DATA_DIR,"Scripts") })
         exploit.downloadInitialScripts()
     }
+    if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts","autoexec.lua"))) {
+        fs.writeFileSync(path.join(JELLYFISH_DATA_DIR,"Scripts","autoexec.lua"), `-- This is the Jellyfish auto-execute script.
+-- Every time your exploit gets injected, Jellyfish will automatically run the contents of this script.
+
+-- The default script bwlow simply shows a notification that the injection was successful.
+local function callback(text)
+game:shutdown()
+end
+local bindableFunction = Instance.new("BindableFunction")
+bindableFunction.OnInvoke = callback
+
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Jellyfish is ready!";
+    Text = "Your exploit was successfully injected"; 
+    Callback = bindableFunction;
+    Button1 = "Exit";
+})
+`)
+
+    }
+    if (fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts","fluxhub.lua"))) {
+        fs.writeFileSync(path.join(JELLYFISH_DATA_DIR,"Scripts","fluxhub.lua"), `-- This script can only be executed with Fluxus.
+hmjdfk()()`)
+
+    }
     win.setTitle("Jellyfish | Checking for updates")
     getLatest = ((j,platform) => {
         for (var r of j) {
@@ -258,6 +280,7 @@ async function createWindow () {
                 enableRemoteModule: false,
                 preload: path.join(__dirname, 'preload.js')
             },
+            backgroundColor: "#222222"
         })
         nwin.removeMenu()
         nwin.loadFile(path.resolve(h))
@@ -265,7 +288,12 @@ async function createWindow () {
         win = nwin
         global.win = nwin
         ipcMain.on("gimmie-devtools",() => { win.webContents.openDevTools() })
-        ipcMain.on('inject-button-click',exploit.inject)
+        ipcMain.on('inject-button-click',async (a) => {
+            await exploit.inject(a)
+            try {
+                await exploit.runScript(fs.readFileSync(path.join(JELLYFISH_DATA_DIR,"Scripts","autoexec.lua")))
+            } catch(e) {}
+        })
         ipcMain.on('check-creds',exploit.checkCreds)
         
         var tmin = 0
@@ -354,10 +382,10 @@ async function createWindow () {
                 win.webContents.send("supported-exploits",supportedExploits)
                 win.webContents.send("set-exploit",global.exploitName)
                 //win.webContents.setLayoutZoomLevelLimits(0, 0);
+                
 
 
-
-
+                return
                 var modal = new BrowserWindow({
                     width: 1200,//1200,
                     height: 550, //550,
