@@ -288,8 +288,8 @@ hmjdfk()()`)
         win = nwin
         global.win = nwin
         ipcMain.on("gimmie-devtools",() => { win.webContents.openDevTools() })
-        ipcMain.on('inject-button-click',async (a) => {
-            await exploit.inject(a)
+        ipcMain.on('inject-button-click',async (evt,a) => {
+            await exploit.inject(evt,a)
             try {
                 await exploit.runScript(fs.readFileSync(path.join(JELLYFISH_DATA_DIR,"Scripts","autoexec.lua")))
             } catch(e) {}
