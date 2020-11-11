@@ -95,7 +95,7 @@ async function getPreferedTheme(override) {
         return "jellyfish-lsef/jellyfish-ui"
     }
 }
-
+ 
 function restart() {
     var argv = process.argv
     /*child_process.spawn(argv.shift(),argv,{
