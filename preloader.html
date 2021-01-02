@@ -3,4 +3,142 @@
         body {background:transparent;}
     </style>
     <title>Jellyfish is loading</title>
+    <div id="background">
+        
+            
+    </div>
+    <svg width="249" height="248" viewBox="0 0 249 248" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 117C0 52.3827 52.3827 0 117 0H132C196.617 0 249 52.3827 249 117V124H0V117Z" fill="white"/>
+        <path d="M9 124H30V246C30 247.105 29.1046 248 28 248H11C9.89543 248 9 247.105 9 246V124Z" fill="white"/>
+        <path d="M39 124H60V246C60 247.105 59.1046 248 58 248H41C39.8954 248 39 247.105 39 246V124Z" fill="white"/>
+        <path d="M99 124H120V246C120 247.105 119.105 248 118 248H101C99.8954 248 99 247.105 99 246V124Z" fill="white"/>
+        <path d="M69 124H90V246C90 247.105 89.1046 248 88 248H71C69.8954 248 69 247.105 69 246V124Z" fill="white"/>
+        <path d="M129 124H150V246C150 247.105 149.105 248 148 248H131C129.895 248 129 247.105 129 246V124Z" fill="white"/>
+        <path d="M159 124H180V246C180 247.105 179.105 248 178 248H161C159.895 248 159 247.105 159 246V124Z" fill="white"/>
+        <path d="M219 124H240V246C240 247.105 239.105 248 238 248H221C219.895 248 219 247.105 219 246V124Z" fill="white"/>
+        <path d="M189 124H210V246C210 247.105 209.105 248 208 248H191C189.895 248 189 247.105 189 246V124Z" fill="white"/>
+    </svg>
+    <p id="text">
+        Loading
+    </p>
+    <style>
+        @keyframes backgroundStart {
+            0% {
+                transform: scale(0);
+                box-shadow: 0px 0px 0px rgba(196, 23, 11, 0.33);
+            }
+            50% {
+                transform: scale(1.2);
+                box-shadow: 0px 0px 60px rgba(196, 23, 11, 0.33);
+            }
+            60% {
+                transform: scale(1);
+                box-shadow: 0px 0px 50px rgba(196, 23, 11, 0.33);
+            }
+        }
+        @keyframes svgStart {
+            0% {
+                transform:  rotate(10deg);
+                top:-278px;
+            }
+            60% {
+                transform:  rotate(10deg);
+                top:-268px;
+            }
+            85% {
+                transform:  rotate(3deg);
+                top:132px;
+            }
+            100% {
+                transform: none;
+            }
+        }
+
+
+        @keyframes svgFlash {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes bgQuit {
+            40% {
+                transform: scale(1);
+                box-shadow: 0px 0px 50px rgba(196, 23, 11, 0.33);
+            }
+            
+            50% {
+                transform: scale(1.2);
+                box-shadow: 0px 0px 60px rgba(196, 23, 11, 0.33);
+            }
+            100% {
+                transform: scale(0);
+                box-shadow: 0px 0px 0px rgba(196, 23, 11, 0.33);
+            }
+            
+        }
+        @keyframes svgQuit {
+            0% {
+                transform: none;
+                top: 132px;
+            }
+            40% {
+                transform: rotate(3deg);
+                top: 512px;
+            }
+            100% {
+                transform: translateY(200%) rotate(13deg);
+                top: 512px;
+            }
+        }
+
+
+
+        #background {
+            /* Rectangle 10 */
+            left: 50px;
+            top: 50px;
+            position: absolute;
+            width: 412px;
+            height: 412px;
+            background: linear-gradient(134.74deg, #DF1D0F 0%, #A91006 100%);
+            box-shadow: 0px 0px 50px rgba(196, 23, 11, 0.33);
+            border-radius: 90px;
+            animation-name: backgroundStart;
+            animation-duration: 0.5s;
+            overflow: hidden;
+        }
+        svg {
+            left: 132px;
+            top: 132px;
+            position: fixed;
+            animation-name: svgStart;
+            animation-duration: 0.5s;
+        }
+        #text {
+            position:fixed;
+            bottom:40px;
+            width:100vw;
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            left:0;
+            color: #fff;
+            opacity: 0.6;
+        }
+    </style>
+    <script>
+        var svg = document.querySelector("svg");
+        var bg = document.querySelector("#background")
+        bg.onanimationend = function() {
+            svg.style.animationName = "svgFlash"
+            svg.style.animationDuration = "2s"
+            svg.style.animationIterationCount = "infinite" 
+        }
+
+    </script>
 </body>
