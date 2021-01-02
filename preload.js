@@ -56,7 +56,6 @@ process.once('loaded', () => {
     global.jellyfish.setTopmost = function(v) { ipcRenderer.send('set-topmost',v) }
     global.jellyfish.inject = function(arg) { ipcRenderer.send("inject-button-click",arg) }
     global.jellyfish.init = function() { ipcRenderer.send("ready") }
-    global.jellyfish.attemptLogin = function(username,password) {ipcRenderer.send('check-creds',[username,password])}
     global.jellyfish.joinPath = function() {return path.join(...arguments)}
     var key = ""
     var cache = []
@@ -88,8 +87,6 @@ process.once('loaded', () => {
 
 
 
-    ipcRenderer.on('request-login', function(a){showLogin(...a)})
-    ipcRenderer.on('login-success', function(){loginSuccess()})
     ipcRenderer.on('set-inject-btn-text', (event, arg) => {injectionStatusChange(arg)})
     ipcRenderer.on('enable-inject-btn', () => {enableInjectBtn()})
     ipcRenderer.on("script-ran",() => { onScriptRun() })
@@ -119,6 +116,53 @@ process.once('loaded', () => {
             crawlFinished()
         }
     })
+    function rpcJoinServer(code) {
+        return new Promise(function(a,r) {
+            var ws = new WebSocket('ws://127.0.0.1:6463/?v=1', {
+                origin: 'https://discord.com'
+            });
+            var gd = false;
+            ws.on('message', function incoming(data) {
+                if (data.startsWith("{\"cmd\":\"DISPATCH\"")) {
+                    ws.send(JSON.stringify({cmd:"INVITE_BROWSER",args:{code:code},nonce:"poggers"}))
+                    setTimeout(function() {
+                        if (!gd) { ws.close();r("Timed out") }
+                    },5000)
+                } else if (data.startsWith("{\"cmd\":\"INVITE_BROWSER\"")){
+                    gd = true
+                    ws.close()
+                    var d = JSON.parse(data).data
+                    if (d.message) {
+                        return r(d.message)
+                    }
+                    d.joinMethod = "rpc"
+                    return a(d)
+                }
+            });
+            ws.on("close", () => {
+                if (!gd) {
+                    ws.close()
+                    return r("Failed to get data")
+                }
+            })
+            ws.on("error", () => {
+                ws.close()
+                r(arguments)
+            })
+        })
+    }
+
+    jellyfish.joinDiscordServer = function(invite) {
+        return new Promise(function(a,r) {
+            rpcJoinServer(invite).then(a).catch((l) => {
+                require("child_process").spawn("https://discord.gg/" + encodeURIComponent(invite))
+                a({
+                    joinMethod: "browser",
+                    ipcError: l
+                })
+            })
+        })
+    }
 
     jellyfish.break = function(){debugger};
 
@@ -177,5 +221,13 @@ process.once('loaded', () => {
     
     // Log in to RPC with client id
     client.login({ clientId:DISCORD_CLIENTID });
-
+    global.jellyfish.setRichPresence = function(state,details) {
+        client.setActivity({
+            details,state,
+            largeImageKey: 'jellyfish',
+            largeImageText: 'Jellyfish ' + navigator.userAgent.split("jellyfish/")[1].split(" ")[0],
+            smallImageKey: global.jellyfish.exploit,
+            smallImageText: global.jellyfish.exploitName,
+          });
+    }
 });

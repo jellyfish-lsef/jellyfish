@@ -6,14 +6,18 @@ const homedir = require('os').homedir();
 const child_process = require('child_process')
 const fetch = require("node-fetch")
 const url = require('url');
+const { exception } = require('console');
 
 
 const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
 global.JELLYFISH_DATA_DIR = JELLYFISH_DATA_DIR
 
-var supportedExploits = ["fluxus"]
+var supportedExploits = []
 if (process.platform == "win32") {
     supportedExploits.push("synx","sirhurt","wrd","easyexploits","krnl")
+}
+if (process.platform == "darwin") {
+    supportedExploits.push("SSC","fluxus")
 }
 var udr = app.getPath('userData')
 if (!fs.existsSync(udr)) {fs.mkdirSync(udr)}
@@ -98,14 +102,16 @@ async function getPreferedTheme(override) {
  
 function restart() {
     var argv = process.argv
-    /*child_process.spawn(argv.shift(),argv,{
+    child_process.spawn(argv.shift(),argv,{
         ...process,
         cwd: process.cwd(),
         detached: true,
-    }).unref();*/
-    app.quit()
+    }).unref();
+    process.exit()
     
 }
+
+function sleep(t) { return new Promise((a) =>{ setTimeout(a,t)})}
 
 async function createWindow () {
     global.exploitName = (getPreferedExploit())
@@ -132,24 +138,27 @@ async function createWindow () {
     }*/
     // Create the browser window.
     var win = new BrowserWindow({
-        width: 368,
-        height: 1,
+        width: 512,
+        height: 512,
         show:true,
         webPreferences: {
             nodeIntegration: false,
         },
         alwaysOnTop: true,
         fullscreenable: false,
-        resizable: false
+        resizable : false,
+        transparent: true,
+        hasShadow: false,
+        frame: false,
     })
     win.setVisibleOnAllWorkspaces(true);
     global.win = win
     win.loadFile('preloader.html')
     win.removeMenu()
     ipcMain.on("gimmie-devtools",() => { win.webContents.openDevTools() })
-
+    var animation = sleep(1000)
     global.win = win
-    win.setTitle("Jellyfish | Creating required files")
+    win.webContents.executeJavaScript(`document.querySelector("p").innerText = "Creating required files"`)
     if (!fs.existsSync(JELLYFISH_DATA_DIR)) {
         fs.mkdirSync(JELLYFISH_DATA_DIR)
     }
@@ -160,7 +169,7 @@ async function createWindow () {
     if (!fs.existsSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))) {
         fs.mkdirSync(path.join(JELLYFISH_DATA_DIR,"Scripts"))
         //console.log(child_process.execSync(`cd;curl  > default.zip;unzip default.zip; rm default.zip`).toString())
-        win.setTitle("Jellyfish | Downloading scripts")
+        win.webContents.executeJavaScript(`document.querySelector("p").innerText = "Downloading scripts"`)
         var f = await fetch('http://jellyfish.thelmgn.com/Jellyfish_Default_Scripts.zip')
         var b = await f.buffer()
         require("extract-zip")(b, { dir: path.join(JELLYFISH_DATA_DIR,"Scripts") })
@@ -191,8 +200,9 @@ game.StarterGui:SetCore("SendNotification", {
 hmjdfk()()`)
 
     }
-    win.setTitle("Jellyfish | Checking for updates")
+    win.webContents.executeJavaScript(`document.querySelector("p").innerText = "Checking for updates"`)
     getLatest = ((j,platform) => {
+        console.log(j)
         for (var r of j) {
             for (var asset of r.assets) {
                 if (asset.name.includes(platform)) return {asset,r};
@@ -219,69 +229,84 @@ hmjdfk()()`)
     } catch(e) {
         console.error(e)
     }
-    win.setTitle("Jellyfish | Updating theme")
+    win.webContents.executeJavaScript(`document.querySelector("p").innerText = "Updating theme"`)
     var preferedTheme = await getPreferedTheme()
     console.log("Updating theme",preferedTheme)
-    win.setTitle("Jellyfish | Updating " + preferedTheme)
+    win.webContents.executeJavaScript(`document.querySelector("p").innerText = "Updating ${preferedTheme}"`)
     var tp = path.join(udr,"themeCache")
+
+
+
     var ac
     var zip = new Promise((a,r) => {ac = a})
-    if (preferedTheme.startsWith("local/")) {
-        tp = path.join(preferedTheme.replace("local/",""))
-    } else {
-        var n2u = true
-        // Only update if there's an update available
-        if (fs.existsSync(path.join(tp, "version.txt")) ) {
-            var ver = fs.readFileSync(path.join(tp, "version.txt")).toString()
-            if (ver.startsWith(preferedTheme.toLowerCase() + "/")) {
-                var f = await fetch(`https://api.github.com/repos/${preferedTheme}/commits?per_page=1`)
-                var j = await f.json()
-                if (j[0] && ver == preferedTheme.toLowerCase() + "/" + j[0].sha) {
-                    tp = path.join(tp, preferedTheme.split("/")[1] + "-master")
-                    n2u = false
+    try {
+        if (preferedTheme.startsWith("local/")) {
+            tp = path.join(preferedTheme.replace("local/",""))
+        } else {
+            var n2u = true
+            // Only update if there's an update available
+            if (fs.existsSync(path.join(tp, "version.txt")) ) {
+                var ver = fs.readFileSync(path.join(tp, "version.txt")).toString()
+                if (ver.startsWith(preferedTheme.toLowerCase() + "/")) {
+                    var f = await fetch(`https://api.github.com/repos/${preferedTheme}/commits?per_page=1`)
+                    var j = await f.json()
+                    if (j[0] && ver == preferedTheme.toLowerCase() + "/" + j[0].sha) {
+                        tp = path.join(tp, preferedTheme.split("/")[1] + "-master")
+                        n2u = false
+                    }
                 }
             }
-        }
-        if (n2u) {
-            if (fs.existsSync(tp)) fs.rmdirSync(tp, {recursive:true});
-            fs.mkdirSync(tp)
-            var f = await fetch(`https://codeload.github.com/${preferedTheme}/zip/master`)
-            var b = await f.buffer()
-            var writtenVersion = false
-            var a = ac
-            ac = () => {}
+            if (n2u) {
+                if (fs.existsSync(tp)) fs.rmdirSync(tp, {recursive:true});
+                fs.mkdirSync(tp)
+                var f = await fetch(`https://codeload.github.com/${preferedTheme}/zip/master`)
+                var b = await f.buffer()
+                var writtenVersion = false
+                var a = ac
+                ac = () => {}
 
-            var to = 0
-            require("extract-zip")(b, { dir: tp,onEntry: (e,z) => {
-                console.log("Unzipping",e.fileName)
-                to = clearTimeout(to)
-                setTimeout(a,1000)
-                if (!writtenVersion) {
-                    fs.writeFileSync(path.join(udr,"themeCache", "version.txt"),preferedTheme.toLowerCase() + "/" + z.comment)
-                    writtenVersion = true
-                }
-            }})
-            tp = path.join(tp, preferedTheme.split("/")[1] + "-master")
+                var to = 0
+                require("extract-zip")(b, { dir: tp,onEntry: (e,z) => {
+                    console.log("Unzipping",e.fileName)
+                    to = clearTimeout(to)
+                    setTimeout(a,1000)
+                    if (!writtenVersion) {
+                        fs.writeFileSync(path.join(udr,"themeCache", "version.txt"),preferedTheme.toLowerCase() + "/" + z.comment)
+                        writtenVersion = true
+                    }
+                }})
+                tp = path.join(tp, preferedTheme.split("/")[1] + "-master")
+            }
         }
+        ac()
+    } catch(e) {
+        dialog.showErrorBox("We couldn't update the theme files",e.stack)
     }
-    ac()
     zip.then(async () => {
         var themePkg = require(path.join(tp,"package.json"))
         var h = path.join(tp,themePkg.main)
-        win.setTitle("Jellyfish | Loading UI")
+        win.webContents.executeJavaScript(`document.querySelector("p").innerText = "Loading UI"`)
         var nwin = new BrowserWindow({
             width: themePkg.width || 768,
             height: themePkg.height || 585,
             resizable: !themePkg.fixedSize,
-            show:true,
+            show:false,
             frame: !themePkg.borderless,
             webPreferences: {
                 nodeIntegration: false,
                 enableRemoteModule: false,
                 preload: path.join(__dirname, 'preload.js')
             },
-            backgroundColor: "#222222"
+            backgroundColor: "transparent"
         })
+        await animation
+        win.webContents.executeJavaScript(`
+            svg.style.animationName = "svgQuit"
+            svg.style.animationDuration = "0.5s"
+            svg.style.animationIterationCount = "1" 
+            bg.style.animationName = "bgQuit"
+        `)
+        await sleep(500)
         nwin.removeMenu()
         nwin.loadFile(path.resolve(h))
         win.destroy()
@@ -294,7 +319,6 @@ hmjdfk()()`)
                 await exploit.runScript(fs.readFileSync(path.join(JELLYFISH_DATA_DIR,"Scripts","autoexec.lua")))
             } catch(e) {}
         })
-        ipcMain.on('check-creds',exploit.checkCreds)
         
         var tmin = 0
         ipcMain.on('set-topmost', (event,arg) => {
@@ -369,7 +393,10 @@ hmjdfk()()`)
 
         ipcMain.on("ready", () => {
             
+            
+
             setTimeout(async function() {
+
                 win.show()
                 win.webContents.setZoomFactor(1);
                 win.webContents.setVisualZoomLevelLimits(1, 1);
@@ -383,9 +410,6 @@ hmjdfk()()`)
                 win.webContents.send("set-exploit",global.exploitName)
                 //win.webContents.setLayoutZoomLevelLimits(0, 0);
                 
-
-
-                return
                 var modal = new BrowserWindow({
                     width: 1200,//1200,
                     height: 550, //550,
@@ -401,9 +425,8 @@ hmjdfk()()`)
                 // code for generating a valid, modern, firefox useragent
                 var d = new Date() - new Date("25 July 2014")
                 var days = Math.floor((d / 86400000))
-                var release = (days - 5) / 28
+                var release = Math.floor((days - 5) / 28)
                 modal.loadURL("https://link-to.net/158988/jellyfish", {userAgent: `Mozilla/5.0 (${process.platform == "win32" ? "Windows NT 10.0; WOW64" : "Macintosh; Intel Mac OS X 10." + (parseInt(require("os").release().split(".")[0]) - 4)}; rv:${release}.0) Gecko/20100101 Firefox/${release}.0`})
-
                 modal.webContents.on("new-window",async (evt) => {
                     evt.preventDefault();
                     console.log("telling the pop up to fuck off")
@@ -419,6 +442,8 @@ hmjdfk()()`)
         });
         
     
+    }).catch((e) => {
+        dialog.showErrorBox("We couldn't update the theme files",e.stack)
     })
      
     
