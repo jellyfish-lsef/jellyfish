@@ -1,5 +1,5 @@
 {
-  "version": "2.4.0",
+  "version": "2.4.1",
   "name": "jellyfish",
   "description": "For more information, please visit the [website](https://jellyfish.thelmgn.com)",
   "main": "index.js",
@@ -27,6 +27,7 @@
     "socket.io-client": "^2.3.0",
     "sudo-prompt": "^9.2.1",
     "walker": "^1.0.7",
+    "windows-process-manager": "^1.0.0",
     "yauzl": "^2.10.0"
   },
   "optionalDependencies": {},

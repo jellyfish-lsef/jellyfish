@@ -3,13 +3,13 @@ const path = require("path")
 const fs = require("fs")
 const exploits = {
     null: "nullExploit",
-    calamari: "Calamari-M",
+    SSC: "sweetheart of sigma chi",
     sirhurt: "SirHurt",
     synx: "Synapse X",
     fluxus: "Fluxus",
-    wrd: "WRD",
+    wrd: "WeAreDevs",
     easyexploits: "EasyExploits",
-    krnl: "KRNL"
+    krnl: "Krnl",
 }
 const datadir = path.join(require("os").homedir(),"Documents","Jellyfish")
 process.once('loaded', () => {

@@ -415,6 +415,7 @@ hmjdfk()()`)
                     height: 550, //550,
                     parent: global.win,
                     modal: true,
+                    frame: false,
                     transparent: false,
                     title: "Support The Developers",
                     webPreferences: {
