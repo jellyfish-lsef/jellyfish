@@ -6,18 +6,17 @@ const homedir = require('os').homedir();
 const child_process = require('child_process')
 const fetch = require("node-fetch")
 const url = require('url');
-const { exception } = require('console');
 
 
 const JELLYFISH_DATA_DIR = path.join(homedir,"Documents","Jellyfish")
 global.JELLYFISH_DATA_DIR = JELLYFISH_DATA_DIR
 
-var supportedExploits = []
+var supportedExploits = ["fluxus"]
 if (process.platform == "win32") {
     supportedExploits.push("synx","sirhurt","wrd","easyexploits","krnl")
 }
 if (process.platform == "darwin") {
-    supportedExploits.push("SSC","fluxus")
+    supportedExploits.push("SSC")
 }
 var udr = app.getPath('userData')
 if (!fs.existsSync(udr)) {fs.mkdirSync(udr)}
