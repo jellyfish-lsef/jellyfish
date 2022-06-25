@@ -21,7 +21,7 @@
     "electron": "^9.0.0",
     "electron-prompt": "^1.6.0",
     "extract-zip": "git+https://github.com/theLMGN/extract-zip.git",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "ps-node": "^0.1.6",
     "semver": "^7.3.2",
     "socket.io-client": "^2.3.0",
